@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/logoicon.png",
         "backgroundColor": "#004E55"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.nafiziqbal.QuranicApp"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +38,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "add54d5b-c1d2-48eb-b824-60410de7335a"
+      }
     }
   }
 }

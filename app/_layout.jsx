@@ -7,8 +7,8 @@ import "./global.css";
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <SettingsProvider>
+    <SettingsProvider>
+      <SafeAreaProvider>
         <SavedVersesProvider>
           <StatusBar hidden={true} />
           <Stack
@@ -22,7 +22,7 @@ export default function RootLayout() {
             <Stack.Screen name="surah/[id]" />
           </Stack>
         </SavedVersesProvider>
-      </SettingsProvider>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </SettingsProvider>
   );
 }

@@ -20,16 +20,16 @@ const COLORS = {
     error: '#DC2626'
   },
   dark: {
-    background: '#004E55',
-    primaryText: '#FAEFCF',
-    secondaryText: '#E5E7EB',
-    accent: '#E4AF52',
-    buttonPrimary: '#09592C',
-    buttonText: '#FFFFFF',
-    cardBackground: '#0A1F1F',
-    divider: '#1F2937',
-    headerBg: '#004E55',
-    error: '#EF4444'
+    background: '#121212',
+    primaryText: '#FFFFFF',
+    secondaryText: '#B3FFFFFF',
+    accent: '#03DAC6',
+    buttonPrimary: '#03DAC6',
+    buttonText: '#000000',
+    cardBackground: '#1E1E1E',
+    divider: '#2C2C2C',
+    headerBg: '#121212',
+    error: '#CF6679'
   }
 };
 

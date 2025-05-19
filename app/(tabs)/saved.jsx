@@ -5,6 +5,7 @@ import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
 import TopSection from "../Components/TopSection";
 import { useSavedVerses } from "../context/SavedVersesContext";
 import { useSettings } from "../context/SettingsContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SavedVerses = () => {
   const router = useRouter();
@@ -82,7 +83,7 @@ const SavedVerses = () => {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <View 
         className="h-auto mt-2 mb-2 rounded-b-3xl pb-4"
         style={{ backgroundColor: colors.headerBg }}
@@ -125,7 +126,7 @@ const SavedVerses = () => {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

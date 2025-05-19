@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,6 +10,8 @@ import SurahCard from "../Components/surahCard";
 import { useSettings } from "../context/SettingsContext";
 import useFetch from "../hook/useFetch";
 import { fetchPrayerTimes, fetchSurahs } from "../services/api";
+
+const PRAYER_TIMES_STORAGE_KEY = '@prayer_times_cache';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -28,12 +31,39 @@ export default function HomeScreen() {
     loading: prayerLoading,
     refetch: refetchPrayerTimes,
     reset: resetPrayerTimes,
-  } = useFetch(() => {
-    if (!locationRef.current?.coords) return Promise.resolve(null);
-    return fetchPrayerTimes({
-      latitude: locationRef.current.coords.latitude,
-      longitude: locationRef.current.coords.longitude,
-    });
+  } = useFetch(async () => {
+    if (!locationRef.current?.coords) return null;
+
+    try {
+      // Try to get cached data first
+      const cachedData = await AsyncStorage.getItem(PRAYER_TIMES_STORAGE_KEY);
+      if (cachedData) {
+        const { data: cachedPrayerData, date } = JSON.parse(cachedData);
+        const today = new Date().toDateString();
+        
+        // If cached data is from today, use it
+        if (date === today) {
+          return cachedPrayerData;
+        }
+      }
+
+      // If no cache or cache is old, fetch new data
+      const newData = await fetchPrayerTimes({
+        latitude: locationRef.current.coords.latitude,
+        longitude: locationRef.current.coords.longitude,
+      });
+
+      // Cache the new data
+      await AsyncStorage.setItem(PRAYER_TIMES_STORAGE_KEY, JSON.stringify({
+        data: newData,
+        date: new Date().toDateString()
+      }));
+
+      return newData;
+    } catch (error) {
+      console.error('Error handling prayer times:', error);
+      throw error;
+    }
   });
 
   const getLocation = async () => {
@@ -66,6 +96,30 @@ export default function HomeScreen() {
     };
     updateData();
   }, [settings]);
+
+  // Check for date change on app focus
+  useEffect(() => {
+    const checkDateChange = async () => {
+      try {
+        const cachedData = await AsyncStorage.getItem(PRAYER_TIMES_STORAGE_KEY);
+        if (cachedData) {
+          const { date } = JSON.parse(cachedData);
+          const today = new Date().toDateString();
+          
+          // If date has changed, clear cache and refetch
+          if (date !== today) {
+            await AsyncStorage.removeItem(PRAYER_TIMES_STORAGE_KEY);
+            resetPrayerTimes();
+            refetchPrayerTimes();
+          }
+        }
+      } catch (error) {
+        console.error('Error checking date change:', error);
+      }
+    };
+
+    checkDateChange();
+  }, []);
 
   return (
     <SafeAreaView
