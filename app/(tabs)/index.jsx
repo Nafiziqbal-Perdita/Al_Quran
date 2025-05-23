@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from "expo-location";
 import { useRouter } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { FlatList, Modal, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ListHeader from "../Components/ListHeader";
 import PrayerHeader from "../Components/PrayerHeader";
@@ -12,6 +12,7 @@ import useFetch from "../hook/useFetch";
 import { fetchPrayerTimes, fetchSurahs } from "../services/api";
 
 const PRAYER_TIMES_STORAGE_KEY = '@prayer_times_cache';
+const FIRST_LAUNCH_KEY = '@first_launch_shown';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -121,11 +122,70 @@ export default function HomeScreen() {
     checkDateChange();
   }, []);
 
+  const [showFirstLaunchModal, setShowFirstLaunchModal] = useState(false);
+  const [checkingFirstLaunch, setCheckingFirstLaunch] = useState(true);
+
+  useEffect(() => {
+    // Check if first launch modal should be shown
+    const checkFirstLaunch = async () => {
+      try {
+        const shown = await AsyncStorage.getItem(FIRST_LAUNCH_KEY);
+        if (!shown) {
+          setShowFirstLaunchModal(true);
+        }
+      } catch (e) {
+        // fallback: show modal if error
+        setShowFirstLaunchModal(true);
+      } finally {
+        setCheckingFirstLaunch(false);
+      }
+    };
+    checkFirstLaunch();
+  }, []);
+
+  const handleFirstLaunchContinue = async () => {
+    setShowFirstLaunchModal(false);
+    await AsyncStorage.setItem(FIRST_LAUNCH_KEY, 'true');
+    getLocation(); // Prompt for location permission
+  };
+
+  if (checkingFirstLaunch) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center" style={{ backgroundColor: colors.background }}>
+        <Text style={{ color: colors.secondaryText, fontSize: 18 }}>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView
       className="flex-1"
       style={{ backgroundColor: colors.background }}
     >
+      {/* First Launch Modal */}
+      <Modal
+        visible={showFirstLaunchModal}
+        animationType="slide"
+        transparent
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ backgroundColor: colors.cardBackground, borderRadius: 20, padding: 24, width: '85%', alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: colors.accent, marginBottom: 12, textAlign: 'center' }}>Welcome to QuranicApp!</Text>
+            <Text style={{ color: colors.primaryText, fontSize: 16, marginBottom: 10, textAlign: 'center' }}>
+              This app supports multiple languages. You can change the language anytime from the Settings screen.
+            </Text>
+            <Text style={{ color: colors.primaryText, fontSize: 16, marginBottom: 18, textAlign: 'center' }}>
+              To get accurate daily prayer times, please allow location access when prompted.
+            </Text>
+            <Pressable
+              onPress={handleFirstLaunchContinue}
+              style={{ backgroundColor: colors.buttonPrimary, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 32, marginTop: 8 }}
+            >
+              <Text style={{ color: colors.buttonText, fontWeight: 'bold', fontSize: 16 }}>Continue</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <PrayerHeader
         prayerData={prayerData}
         onRetry={getLocation}
