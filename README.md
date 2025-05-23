@@ -1,50 +1,95 @@
-# Welcome to your Expo app 👋
+<p align="center">
+  <img src="assets/images/mainIcon.png" alt="QuranicApp Logo" width="120" />
+</p>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<h1 align="center">QuranicApp 📖</h1>
+<p align="center">
+  <b>A modern, multi-language Quran app with verse saving, customizable settings, and daily prayer times.<br>
+  Built with React Native & Expo for Android, iOS, and Web.</b>
+</p>
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Features
 
+- 📚 **Read the Quran:** Browse all 114 Surahs with translations and verse details.
+- ⭐ **Save Verses:** Bookmark your favorite verses for quick access.
+- 🕋 **Prayer Times:** Get daily prayer times based on your location.
+- 🌙 **Dark Mode:** Switch between light and dark themes.
+- 🌐 **Multi-language:** Choose from multiple translations.
+- 🖋️ **Customizable:** Adjust font size and reading preferences.
+- 💾 **Offline Support:** Saved verses and settings are stored locally.
+
+---
+
+## 🚀 Installation & Usage
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/QuranicApp.git
+   cd QuranicApp
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. **Start the app**
    ```bash
    npx expo start
    ```
+   - Open in [Expo Go](https://expo.dev/go) on your device, or use an Android/iOS emulator.
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🛠️ Tech Stack
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **React Native** & **Expo** – Cross-platform mobile development
+- **NativeWind** – Tailwind CSS for React Native styling
+- **React Navigation** – Tab-based navigation
+- **AsyncStorage** – Local data persistence
+- **Context API** – State management for settings and saved verses
+- **REST APIs** – Fetch Quran data and prayer times
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 📂 Project Structure
 
-```bash
-npm run reset-project
+```
+QuranicApp/
+├── app/
+│   ├── (tabs)/         # Main screens (Home, Saved, Settings)
+│   ├── context/        # Context providers for settings & saved verses
+│   ├── services/       # API calls for Quran & prayer times
+│   └── components/     # Reusable UI components
+├── assets/             # Images, fonts, etc.
+├── README.md
+└── ...
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🤝 Contributing
 
-To learn more about developing your project with Expo, look at the following resources:
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 📖 Learn More
 
-Join our community of developers creating universal apps.
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Docs](https://reactnative.dev/)
+- [NativeWind Docs](https://www.nativewind.dev/)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+<p align="center">
+  <b>Made with ❤️ for the Quranic community</b>
+</p>
+
+---
+
+## 👨‍💻 About the Developer
+
+This project is developed and maintained by Nafiz, passionate about building modern, accessible Islamic apps for the community. Connect on [GitHub](https://github.com/yourusername).
