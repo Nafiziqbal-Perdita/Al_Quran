@@ -7,6 +7,7 @@ import { useSavedVerses } from '../context/SavedVersesContext';
 import { useSettings } from '../context/SettingsContext';
 import useFetch from '../hook/useFetch';
 import { fetchSurah } from '../services/api';
+import Loading from '../Components/Loading';
 
 const BISMILLAH = {
     text: 'بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ',
@@ -55,12 +56,13 @@ const SurahDetails = () => {
                 className="flex-1 items-center justify-center"
                 style={{ backgroundColor: colors.background }}
             >
-                <Text 
+                {/* <Text 
                     className="text-lg"
                     style={{ color: colors.secondaryText }}
                 >
                     Loading Surah...
-                </Text>
+                </Text> */}
+                <Loading/>
             </SafeAreaView>
         );
     }

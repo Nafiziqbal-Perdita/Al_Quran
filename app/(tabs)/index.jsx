@@ -10,6 +10,7 @@ import SurahCard from "../Components/surahCard";
 import { useSettings } from "../context/SettingsContext";
 import useFetch from "../hook/useFetch";
 import { fetchPrayerTimes, fetchSurahs } from "../services/api";
+import Loading from '../Components/Loading';
 
 const PRAYER_TIMES_STORAGE_KEY = '@prayer_times_cache';
 const FIRST_LAUNCH_KEY = '@first_launch_shown';
@@ -46,7 +47,7 @@ export default function HomeScreen() {
         if (date === today) {
           return cachedPrayerData;
         }
-      }
+      }   
 
       // If no cache or cache is old, fetch new data
       const newData = await fetchPrayerTimes({
@@ -66,7 +67,6 @@ export default function HomeScreen() {
       throw error;
     }
   });
-
   const getLocation = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -152,7 +152,8 @@ export default function HomeScreen() {
   if (checkingFirstLaunch) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center" style={{ backgroundColor: colors.background }}>
-        <Text style={{ color: colors.secondaryText, fontSize: 18 }}>Loading...</Text>
+        {/* <Text style={{ color: colors.secondaryText, fontSize: 18 }}>Loading...</Text> */}
+        <Loading />
       </SafeAreaView>
     );
   }
@@ -204,11 +205,12 @@ export default function HomeScreen() {
       {/* Content Section */}
       <View className="flex-1" style={{ backgroundColor: colors.background }}>
         {loading ? (
-          <View className="flex-1 items-center justify-center">
-            <Text style={{ color: colors.secondaryText, fontSize: 18 }}>
-              Loading Surahs...
-            </Text>
-          </View>
+          // <View className="flex-1 items-center justify-center">
+          //   <Text style={{ color: colors.secondaryText, fontSize: 18 }}>
+          //     Loading Surahs...
+          //   </Text>
+          // </View>
+          <Loading/>
         ) : error ? (
           <View className="flex-1 items-center justify-center">
             <Text style={{ color: colors.error, fontSize: 18 }}>
