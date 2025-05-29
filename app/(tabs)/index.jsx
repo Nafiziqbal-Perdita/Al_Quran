@@ -1,24 +1,36 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, Modal, Pressable, Text, View } from "react-native";
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  RefreshControl,
+  Text,
+  View,
+} from "react-native";
+// import {
+//   BannerAd,
+//   BannerAdSize
+// } from "react-native-google-mobile-ads";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ListHeader from "../Components/ListHeader";
+import Loading from "../Components/Loading";
 import PrayerHeader from "../Components/PrayerHeader";
 import SurahCard from "../Components/surahCard";
+import TopSection from "../Components/TopSection";
 import { useSettings } from "../context/SettingsContext";
 import useFetch from "../hook/useFetch";
 import { fetchPrayerTimes, fetchSurahs } from "../services/api";
-import Loading from '../Components/Loading';
-
-const PRAYER_TIMES_STORAGE_KEY = '@prayer_times_cache';
-const FIRST_LAUNCH_KEY = '@first_launch_shown';
+const PRAYER_TIMES_STORAGE_KEY = "@prayer_times_cache";
+const FIRST_LAUNCH_KEY = "@first_launch_shown";
 
 export default function HomeScreen() {
   const router = useRouter();
   const locationRef = useRef(null);
   const [permissionStatus, setPermissionStatus] = useState("undetermined");
+  const [adLoaded, setAdLoaded] = useState(false);
   const { getColors } = useSettings();
   const colors = getColors();
 
@@ -42,12 +54,12 @@ export default function HomeScreen() {
       if (cachedData) {
         const { data: cachedPrayerData, date } = JSON.parse(cachedData);
         const today = new Date().toDateString();
-        
+
         // If cached data is from today, use it
         if (date === today) {
           return cachedPrayerData;
         }
-      }   
+      }
 
       // If no cache or cache is old, fetch new data
       const newData = await fetchPrayerTimes({
@@ -56,14 +68,17 @@ export default function HomeScreen() {
       });
 
       // Cache the new data
-      await AsyncStorage.setItem(PRAYER_TIMES_STORAGE_KEY, JSON.stringify({
-        data: newData,
-        date: new Date().toDateString()
-      }));
+      await AsyncStorage.setItem(
+        PRAYER_TIMES_STORAGE_KEY,
+        JSON.stringify({
+          data: newData,
+          date: new Date().toDateString(),
+        })
+      );
 
       return newData;
     } catch (error) {
-      console.error('Error handling prayer times:', error);
+      console.error("Error handling prayer times:", error);
       throw error;
     }
   });
@@ -106,7 +121,7 @@ export default function HomeScreen() {
         if (cachedData) {
           const { date } = JSON.parse(cachedData);
           const today = new Date().toDateString();
-          
+
           // If date has changed, clear cache and refetch
           if (date !== today) {
             await AsyncStorage.removeItem(PRAYER_TIMES_STORAGE_KEY);
@@ -115,7 +130,7 @@ export default function HomeScreen() {
           }
         }
       } catch (error) {
-        console.error('Error checking date change:', error);
+        console.error("Error checking date change:", error);
       }
     };
 
@@ -145,13 +160,33 @@ export default function HomeScreen() {
 
   const handleFirstLaunchContinue = async () => {
     setShowFirstLaunchModal(false);
-    await AsyncStorage.setItem(FIRST_LAUNCH_KEY, 'true');
+    await AsyncStorage.setItem(FIRST_LAUNCH_KEY, "true");
     getLocation(); // Prompt for location permission
+  };
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      // Only refresh Surahs and Prayer Times
+      reset();
+      await refetch(); // Refresh Surahs
+      resetPrayerTimes();
+      await refetchPrayerTimes(); // Refresh Prayer Times
+    } catch (error) {
+      console.error("Error during refresh:", error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   if (checkingFirstLaunch) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center" style={{ backgroundColor: colors.background }}>
+      <SafeAreaView
+        className="flex-1 items-center justify-center"
+        style={{ backgroundColor: colors.background }}
+      >
         {/* <Text style={{ color: colors.secondaryText, fontSize: 18 }}>Loading...</Text> */}
         <Loading />
       </SafeAreaView>
@@ -164,29 +199,84 @@ export default function HomeScreen() {
       style={{ backgroundColor: colors.background }}
     >
       {/* First Launch Modal */}
-      <Modal
-        visible={showFirstLaunchModal}
-        animationType="slide"
-        transparent
-      >
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ backgroundColor: colors.cardBackground, borderRadius: 20, padding: 24, width: '85%', alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8 }}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', color: colors.accent, marginBottom: 12, textAlign: 'center' }}>Welcome to QuranicApp!</Text>
-            <Text style={{ color: colors.primaryText, fontSize: 16, marginBottom: 10, textAlign: 'center' }}>
-              This app supports multiple languages. You can change the language anytime from the Settings screen.
+      <Modal visible={showFirstLaunchModal} animationType="slide" transparent>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: colors.cardBackground,
+              borderRadius: 20,
+              padding: 24,
+              width: "85%",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOpacity: 0.2,
+              shadowRadius: 8,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "bold",
+                color: colors.accent,
+                marginBottom: 12,
+                textAlign: "center",
+              }}
+            >
+              Welcome to QuranicApp!
             </Text>
-            <Text style={{ color: colors.primaryText, fontSize: 16, marginBottom: 18, textAlign: 'center' }}>
-              To get accurate daily prayer times, please allow location access when prompted.
+            <Text
+              style={{
+                color: colors.primaryText,
+                fontSize: 16,
+                marginBottom: 10,
+                textAlign: "center",
+              }}
+            >
+              This app supports multiple languages. You can change the language
+              anytime from the Settings screen.
+            </Text>
+            <Text
+              style={{
+                color: colors.primaryText,
+                fontSize: 16,
+                marginBottom: 18,
+                textAlign: "center",
+              }}
+            >
+              To get accurate daily prayer times, please allow location access
+              when prompted.
             </Text>
             <Pressable
               onPress={handleFirstLaunchContinue}
-              style={{ backgroundColor: colors.buttonPrimary, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 32, marginTop: 8 }}
+              style={{
+                backgroundColor: colors.buttonPrimary,
+                borderRadius: 10,
+                paddingVertical: 10,
+                paddingHorizontal: 32,
+                marginTop: 8,
+              }}
             >
-              <Text style={{ color: colors.buttonText, fontWeight: 'bold', fontSize: 16 }}>Continue</Text>
+              <Text
+                style={{
+                  color: colors.buttonText,
+                  fontWeight: "bold",
+                  fontSize: 16,
+                }}
+              >
+                Continue
+              </Text>
             </Pressable>
           </View>
         </View>
       </Modal>
+      <TopSection/>
       <PrayerHeader
         prayerData={prayerData}
         onRetry={getLocation}
@@ -195,22 +285,32 @@ export default function HomeScreen() {
 
       {/* Ad Banner Section */}
       <View
-        className="w-full h-16 items-center justify-center"
+        className="w-full py-2"
         style={{ backgroundColor: colors.cardBackground }}
       >
-        <Text style={{ color: colors.secondaryText }}>
-          Advertisement Banner
-        </Text>
+        {!adLoaded && (
+          <Text 
+            className="text-center py-1"
+            style={{ color: colors.secondaryText }}
+          >
+            Advertisement Banner
+          </Text>
+        )}
+        {/* <BannerAd
+          unitId="ca-app-pub-2099807078746982/7729901882"
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+          onAdLoaded={() => setAdLoaded(true)}
+          onAdFailedToLoad={() => setAdLoaded(false)}
+        /> */}
       </View>
+
       {/* Content Section */}
       <View className="flex-1" style={{ backgroundColor: colors.background }}>
         {loading ? (
-          // <View className="flex-1 items-center justify-center">
-          //   <Text style={{ color: colors.secondaryText, fontSize: 18 }}>
-          //     Loading Surahs...
-          //   </Text>
-          // </View>
-          <Loading/>
+          <Loading />
         ) : error ? (
           <View className="flex-1 items-center justify-center">
             <Text style={{ color: colors.error, fontSize: 18 }}>
@@ -234,6 +334,17 @@ export default function HomeScreen() {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 20 }}
               ListHeaderComponent={ListHeader}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={[colors.accent]} // Android
+                  tintColor={colors.accent} // iOS
+                  progressBackgroundColor={colors.cardBackground}
+                  title="Pull to refresh" // iOS
+                  titleColor={colors.secondaryText} // iOS
+                />
+              }
             />
           </View>
         )}

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "QuranicApp",
+    "name": "Al Quran",
     "slug": "QuranicApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+     
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logoicon.png",
         "backgroundColor": "#004E55"
@@ -33,6 +34,13 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#004E55"
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-2099807078746982~4780546161"
+             
         }
       ]
     ],

@@ -1,44 +1,58 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import { useState } from 'react';
 import {
-    Linking,
-    Platform,
-    Text,
-    TouchableOpacity,
-    View
+  Linking,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { useSettings } from "../context/SettingsContext";
-import TopSection from "./TopSection";
 
 const PrayerTimeItem = ({ name, time, icon, colors }) => (
   <View 
     className="flex-row items-center justify-between py-1.5 border-b"
-    style={{ borderBottomColor: colors.divider }}
+    style={{ borderBottomColor: colors?.divider || '#ccc' }}
   >
     <View className="flex-row items-center">
-      <Ionicons name={icon} size={18} color={colors.accent} />
+      <Ionicons name={icon} size={18} color={colors?.accent || '#000'} />
       <Text 
         className="ml-2 font-medium"
-        style={{ color: colors.primaryText }}
+        style={{ color: colors?.primaryText || '#000' }}
       >
-        {name}
+        {name || '--'}
       </Text>
     </View>
-    <Text style={{ color: colors.secondaryText }}>{time}</Text>
+    <Text style={{ color: colors?.secondaryText || '#888' }}>{time || '--:--'}</Text>
   </View>
 );
 
 const formatTime = (time) => {
-  const [hours, minutes] = time.split(":");
-  const hour = parseInt(hours);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const formattedHour = hour % 12 || 12;
-  return `${formattedHour}:${minutes} ${ampm}`;
+  if (!time || typeof time !== "string" || !time.includes(":")) return "--:--";
+  try {
+    const [hours, minutes] = time.split(":");
+    if (isNaN(hours) || isNaN(minutes)) return "--:--";
+    const hour = parseInt(hours);
+    const min = parseInt(minutes);
+    if (isNaN(hour) || isNaN(min)) return "--:--";
+    const ampm = hour >= 12 ? "PM" : "AM";
+    const formattedHour = hour % 12 || 12;
+    return `${formattedHour}:${minutes} ${ampm}`;
+  } catch (error) {
+    console.error("Error formatting time:", error);
+    return "--:--";
+  }
 };
 
 const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
   const { getColors } = useSettings();
   const colors = getColors();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Defensive: fallback for missing timings object
+  const timings = prayerData?.data?.timings || {};
+  const hijri = prayerData?.data?.date?.hijri || {};
+  const hijriMonth = hijri?.month || {};
 
   const openSettings = async () => {
     try {
@@ -46,8 +60,10 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
         alert(
           "Please enable location permissions in your browser settings and refresh the page."
         );
-      } else {
+      } else if (Linking && Linking.openSettings) {
         await Linking.openSettings();
+      } else {
+        alert("Settings cannot be opened on this device.");
       }
     } catch (error) {
       console.error("Error handling settings:", error);
@@ -59,7 +75,6 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
 
   const renderPermissionUI = () => {
     const isDenied = permissionStatus === "denied";
-
     return (
       <View 
         className="rounded-2xl p-4 shadow-lg items-center"
@@ -121,7 +136,6 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
         className="h-auto mt-2 mb-2 rounded-b-3xl  pb-4"
         style={{ backgroundColor: colors.headerBg }}
       >
-        <TopSection />
         {renderPermissionUI()}
       </View>
     );
@@ -129,13 +143,11 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
 
   return (
     <View 
-      className="h-auto mt-2 mb-2 rounded-b-3xl  pb-4"
+      className="h-auto mt-2 mb-2 rounded-b-3xl pb-4"
       style={{ backgroundColor: colors.headerBg }}
     >
-      <TopSection />
-
       <View 
-        className=" mt-2 rounded-2xl p-3 shadow-lg"
+        className="mt-2 rounded-2xl p-3 shadow-lg"
         style={{ backgroundColor: colors.cardBackground }}
       >
         <View className="flex-row justify-between items-center mb-2">
@@ -150,7 +162,7 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
               className="font-semibold text-base"
               style={{ color: colors.primaryText }}
             >
-              {prayerData.data.date.readable}
+              {prayerData?.data?.date?.readable || "--"}
             </Text>
           </View>
           <View 
@@ -161,8 +173,8 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
               className="font-medium"
               style={{ color: colors.buttonText }}
             >
-              {prayerData.data.date.hijri.day}{" "}
-              {prayerData.data.date.hijri.month.en}
+              {hijri?.day || "--"} {" "}
+              {hijriMonth?.en || "--"}
             </Text>
           </View>
         </View>
@@ -181,7 +193,7 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
                 className="font-medium"
                 style={{ color: colors.primaryText }}
               >
-                {formatTime(prayerData.data.timings.Sunrise)}
+                {formatTime(timings?.Sunrise)}
               </Text>
             </View>
           </View>
@@ -198,44 +210,58 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
                 className="font-medium"
                 style={{ color: colors.primaryText }}
               >
-                {formatTime(prayerData.data.timings.Sunset)}
+                {formatTime(timings?.Sunset)}
               </Text>
             </View>
           </View>
         </View>
 
-        <View className="mt-1">
-          <PrayerTimeItem
-            name="Fajr"
-            time={formatTime(prayerData.data.timings.Fajr)}
-            icon="sunny-outline"
-            colors={colors}
+        <TouchableOpacity 
+          onPress={() => setIsExpanded(!isExpanded)}
+          className="items-center py-2 border-t"
+          style={{ borderTopColor: colors.divider }}
+        >
+          <Ionicons 
+            name={isExpanded ? "chevron-up" : "chevron-down"} 
+            size={24} 
+            color={colors.accent} 
           />
-          <PrayerTimeItem
-            name="Dhuhr"
-            time={formatTime(prayerData.data.timings.Dhuhr)}
-            icon="sunny"
-            colors={colors}
-          />
-          <PrayerTimeItem
-            name="Asr"
-            time={formatTime(prayerData.data.timings.Asr)}
-            icon="partly-sunny-outline"
-            colors={colors}
-          />
-          <PrayerTimeItem
-            name="Maghrib"
-            time={formatTime(prayerData.data.timings.Maghrib)}
-            icon="cloudy-night"
-            colors={colors}
-          />
-          <PrayerTimeItem
-            name="Isha"
-            time={formatTime(prayerData.data.timings.Isha)}
-            icon="moon"
-            colors={colors}
-          />
-        </View>
+        </TouchableOpacity>
+
+        {isExpanded && (
+          <View className="mt-1">
+            <PrayerTimeItem
+              name="Fajr"
+              time={formatTime(timings?.Fajr)}
+              icon="sunny-outline"
+              colors={colors}
+            />
+            <PrayerTimeItem
+              name="Dhuhr"
+              time={formatTime(timings?.Dhuhr)}
+              icon="sunny"
+              colors={colors}
+            />
+            <PrayerTimeItem
+              name="Asr"
+              time={formatTime(timings?.Asr)}
+              icon="partly-sunny-outline"
+              colors={colors}
+            />
+            <PrayerTimeItem
+              name="Maghrib"
+              time={formatTime(timings?.Maghrib)}
+              icon="cloudy-night"
+              colors={colors}
+            />
+            <PrayerTimeItem
+              name="Isha"
+              time={formatTime(timings?.Isha)}
+              icon="moon"
+              colors={colors}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

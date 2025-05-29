@@ -1,4 +1,3 @@
-import React from "react";
 import { Image, Text, View } from "react-native";
 import { useSettings } from "../context/SettingsContext";
 
@@ -8,42 +7,50 @@ const TopSection = () => {
 
   return (
     <View 
-      className="flex-row  justify-between items-center px-2 py-3"
-      style={{ backgroundColor: colors.cardBackground }}
+      className="flex-row justify-between items-center px-4 py-6 rounded-b-3xl shadow-lg"
+      style={{ 
+        backgroundColor: colors.cardBackground,
+        shadowColor: colors.buttonPrimary,
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 5
+      }}
     >
-      <Image
-        source={require("../../assets/images/mainIcon.png")}
-        style={{
-          width: 100,
-          height: 100,
-          resizeMode: "contain",
-        }}
-      />
-
-      <View className="items-end">
-        <Text
+      <View className="flex-row items-center">
+        <Image
+          source={require("../../assets/images/mainIcon.png")}
           style={{
-            fontSize: 30,
-           
-            color: colors.buttonPrimary,
-            textShadowColor: "rgba(228, 175, 82, 0.2)",
-            textShadowOffset: { width: 1, height: 1 },
-            textShadowRadius: 2,
+            width: 80,
+            height: 80,
+            resizeMode: "contain",
+            borderRadius: 20,
           }}
-        >
-          Al Quran
-        </Text>
-        <View className="flex-row items-center mt-1">
-          <View 
-            className="w-8 h-[2px] mr-2" 
-            style={{ backgroundColor: colors.accent }} 
-          />
-          <Text 
-            className="text-sm"
-            style={{ color: colors.secondaryText }}
+        />
+        <View className="ml-4">
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: '600',
+              color: colors.buttonPrimary,
+              textShadowColor: "rgba(228, 175, 82, 0.15)",
+              textShadowOffset: { width: 1, height: 1 },
+              textShadowRadius: 3,
+            }}
           >
-            The Holy Book
+            Al Quran
           </Text>
+          <View className="flex-row items-center mt-1">
+            <View 
+              className="w-12 h-[2px] mr-2 rounded-full" 
+              style={{ backgroundColor: colors.accent }} 
+            />
+            <Text 
+              className="text-sm font-medium"
+              style={{ color: colors.secondaryText }}
+            >
+              The Holy Book
+            </Text>
+          </View>
         </View>
       </View>
     </View>

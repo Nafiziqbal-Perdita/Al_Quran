@@ -1,5 +1,4 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useSettings } from '../context/SettingsContext';
 
@@ -17,52 +16,86 @@ const SurahCard = ({ item }) => {
 
   return (
     <TouchableOpacity 
-      className="flex-row items-center justify-between p-4 border-b"
+      className="mx-4 my-2 p-4 rounded-2xl"
       style={{ 
         backgroundColor: colors.cardBackground,
-        borderBottomColor: colors.divider
+        shadowColor: colors.buttonPrimary,
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3.84,
+        elevation: 5,
       }}
       onPress={handlePress}
     >
-      <View className="flex-row items-center">
-        <View 
-          className="w-12 h-12 rounded-full items-center justify-center mr-3 shadow-md"
-          style={{ backgroundColor: colors.buttonPrimary }}
-        >
-          <Text className="text-white font-bold text-lg" style={{position: 'absolute'}}>{item.id}</Text>
-          <Text className="text-white text-4xl">۝</Text>
-        </View>
-        <View>
-          <Text 
-            className="text-2xl font-semibold"
-            style={{ color: colors.primaryText }}
+      <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center flex-1">
+          <View 
+            className="w-14 h-14 rounded-2xl items-center justify-center mr-4"
+            style={{ 
+              backgroundColor: colors.buttonPrimary,
+              opacity: 0.9,
+            }}
           >
-            {item.name}
-          </Text>
+            <Text 
+              className="text-white font-bold text-lg"
+              style={{
+                position: 'absolute',
+                textShadowColor: 'rgba(0, 0, 0, 0.2)',
+                textShadowOffset: { width: 0, height: 1 },
+                textShadowRadius: 2,
+              }}
+            >
+              {item.id}
+            </Text>
+            <Text className="text-white text-4xl opacity-50">۝</Text>
+          </View>
+          
+          <View className="flex-1">
+            <Text 
+              className="text-xl font-semibold mb-1"
+              style={{ 
+                color: colors.primaryText,
+                textShadowColor: 'rgba(0, 0, 0, 0.1)',
+                textShadowOffset: { width: 0, height: 1 },
+                textShadowRadius: 1,
+              }}
+            >
+              {item.name}
+            </Text>
+            <Text 
+              className="text-sm"
+              style={{ color: colors.secondaryText }}
+            >
+              {item.transliteration}
+            </Text>
+          </View>
+        </View>
+
+        <View className="items-end ml-2">
           <Text 
-            className="text-sm"
+            className="text-sm font-medium mb-1"
             style={{ color: colors.secondaryText }}
           >
-            {item.transliteration}
+            {item.translation}
           </Text>
+          <View 
+            className="px-3 py-1 rounded-full"
+            style={{ backgroundColor: `${colors.buttonPrimary}20` }}
+          >
+            <Text 
+              className="text-xs"
+              style={{ color: colors.buttonPrimary }}
+            >
+              {item.total_verses} verses
+            </Text>
+          </View>
         </View>
       </View>
-      <View className="items-end">
-        <Text 
-          className="text-sm"
-          style={{ color: colors.secondaryText }}
-        >
-          {item.translation}
-        </Text>
-        <Text 
-          className="text-xs"
-          style={{ color: colors.secondaryText, opacity: 0.7 }}
-        >
-          {item.total_verses} verses
-        </Text>
-      </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default SurahCard
+export default SurahCard;

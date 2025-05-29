@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const STORAGE_KEY = '@quran_saved_verses';
 
@@ -77,4 +77,6 @@ export const useSavedVerses = () => {
         throw new Error('useSavedVerses must be used within a SavedVersesProvider');
     }
     return context;
-}; 
+};
+
+export default SavedVersesProvider;

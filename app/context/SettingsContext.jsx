@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const STORAGE_KEY = '@quran_settings';
 
@@ -116,7 +116,6 @@ export const SettingsProvider = ({ children }) => {
                 updateSettings,
                 getFontSizeValue,
                 getLanguageCode,
-                isDarkMode,
                 getColors
             }}
         >
@@ -131,4 +130,6 @@ export const useSettings = () => {
         throw new Error('useSettings must be used within a SettingsProvider');
     }
     return context;
-}; 
+};
+
+export default SettingsProvider;
