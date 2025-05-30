@@ -1,11 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from 'react';
 import {
-  Linking,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View
+    Linking,
+    Platform,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 import { useSettings } from "../context/SettingsContext";
 
@@ -18,12 +18,12 @@ const PrayerTimeItem = ({ name, time, icon, colors }) => (
       <Ionicons name={icon} size={18} color={colors?.accent || '#000'} />
       <Text 
         className="ml-2 font-medium"
-        style={{ color: colors?.primaryText || '#000' }}
+        style={{ color: colors?.primaryText || '#000', fontSize: 13 }}
       >
         {name || '--'}
       </Text>
     </View>
-    <Text style={{ color: colors?.secondaryText || '#888' }}>{time || '--:--'}</Text>
+    <Text style={{ color: colors?.secondaryText || '#888', fontSize: 13 }}>{time || '--:--'}</Text>
   </View>
 );
 
@@ -44,7 +44,7 @@ const formatTime = (time) => {
   }
 };
 
-const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
+const PrayerHeader = ({ prayerData, onRetry, permissionStatus, loading }) => {
   const { getColors } = useSettings();
   const colors = getColors();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -129,6 +129,19 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus }) => {
       </View>
     );
   };
+
+  if (loading) {
+    return (
+      <View className="h-auto mt-2 mb-2 rounded-b-3xl pb-4" style={{ backgroundColor: colors.headerBg }}>
+        <View className="rounded-2xl p-4 shadow-lg items-center" style={{ backgroundColor: colors.cardBackground }}>
+          <Ionicons name="time-outline" size={36} color={colors.accent} />
+          <Text className="font-medium mt-2" style={{ color: colors.primaryText }}>
+            Fetching prayer times...
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   if (!prayerData?.data) {
     return (

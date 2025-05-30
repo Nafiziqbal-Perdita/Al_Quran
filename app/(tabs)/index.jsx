@@ -3,12 +3,12 @@ import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
-  FlatList,
+  AppState, FlatList,
   Modal,
   Pressable,
   RefreshControl,
   Text,
-  View,
+  View
 } from "react-native";
 // import {
 //   BannerAd,
@@ -84,8 +84,16 @@ export default function HomeScreen() {
   });
   const getLocation = async () => {
     try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      setPermissionStatus(status);
+      // Always check the latest permission status
+      let { status } = await Location.getForegroundPermissionsAsync();
+      if (status !== "granted") {
+        // Try requesting permission if not already granted
+        const request = await Location.requestForegroundPermissionsAsync();
+        status = request.status;
+        setPermissionStatus(status);
+      } else {
+        setPermissionStatus(status);
+      }
 
       if (status !== "granted") {
         return;
@@ -180,6 +188,39 @@ export default function HomeScreen() {
       setRefreshing(false);
     }
   };
+
+  // Track app state for permission change
+  useEffect(() => {
+    let appStateListener;
+    let lastStatus = permissionStatus;
+
+    const checkPermissionOnFocus = async () => {
+      try {
+        const { status } = await Location.getForegroundPermissionsAsync();
+        if (lastStatus === "denied" && status === "granted") {
+          setPermissionStatus(status);
+          getLocation(); // Automatically fetch location/prayer times
+        } else if (status !== lastStatus) {
+          setPermissionStatus(status);
+        }
+        lastStatus = status;
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    appStateListener = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        checkPermissionOnFocus();
+      }
+    });
+
+    return () => {
+      if (appStateListener && appStateListener.remove) {
+        appStateListener.remove();
+      }
+    };
+  }, [permissionStatus]);
 
   if (checkingFirstLaunch) {
     return (
@@ -281,6 +322,7 @@ export default function HomeScreen() {
         prayerData={prayerData}
         onRetry={getLocation}
         permissionStatus={permissionStatus}
+        loading={prayerLoading}
       />
 
       {/* Ad Banner Section */}
