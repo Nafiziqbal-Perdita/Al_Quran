@@ -131,6 +131,67 @@ const Settings = () => {
         );
     }
 
+    // Dark Mode Toggle Section
+    const renderDarkModeToggle = () => (
+        <View className="mb-6">
+            <Text 
+                className="text-lg font-semibold mb-3"
+                style={{ color: colors.accent }}
+            >
+                Appearance
+            </Text>
+            <View 
+                className="rounded-2xl p-5 shadow-sm"
+                style={{ 
+                    backgroundColor: colors.cardBackground,
+                    shadowColor: colors.cardShadow,
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 8,
+                    elevation: 4,
+                    borderWidth: 1,
+                    borderColor: colors.divider,
+                }}
+            >
+                <View className="flex-row items-center justify-between">
+                    <View className="flex-row items-center">
+                        <View 
+                            className="w-10 h-10 rounded-full items-center justify-center mr-3"
+                            style={{ backgroundColor: settings.darkMode ? colors.buttonPrimary : `${colors.buttonPrimary}20` }}
+                        >
+                            <Ionicons 
+                                name={settings.darkMode ? "moon" : "sunny"} 
+                                size={22} 
+                                color={settings.darkMode ? colors.buttonText : colors.buttonPrimary} 
+                            />
+                        </View>
+                        <View>
+                            <Text 
+                                className="text-base font-medium"
+                                style={{ color: colors.primaryText }}
+                            >
+                                Dark Mode
+                            </Text>
+                            <Text 
+                                className="text-sm"
+                                style={{ color: colors.secondaryText }}
+                            >
+                                {settings.darkMode ? "Currently enabled" : "Currently disabled"}
+                            </Text>
+                        </View>
+                    </View>
+                    <Switch
+                        value={settings.darkMode}
+                        onValueChange={(value) => handleSettingChange('darkMode', value)}
+                        trackColor={{ false: colors.divider, true: `${colors.buttonPrimary}80` }}
+                        thumbColor={settings.darkMode ? colors.buttonPrimary : colors.buttonText}
+                        ios_backgroundColor={colors.divider}
+                    />
+                </View>
+            </View>
+        </View>
+    );
+
     return (
         <SafeAreaView 
             className="flex-1"
@@ -138,7 +199,7 @@ const Settings = () => {
         >
             {/* Header Section */}
             <View 
-                className="h-auto  mt-2 mb-2 rounded-b-3xl pb-4"
+                className="h-auto mt-2 mb-2 rounded-b-3xl pb-4"
                 style={{ backgroundColor: colors.background }}
             >
                 <TopSection />
@@ -146,13 +207,21 @@ const Settings = () => {
 
             {/* Ad Banner Section */}
             <View 
-                className="w-full h-16 items-center justify-center"
-                style={{ backgroundColor: colors.cardBackground }}
+                className="w-full h-16 items-center justify-center mb-2"
+                style={{ 
+                    backgroundColor: colors.cardBackground,
+                    borderTopWidth: 1,
+                    borderBottomWidth: 1,
+                    borderColor: colors.divider,
+                }}
             >
                 <Text style={{ color: colors.secondaryText }}>Advertisement Banner</Text>
             </View>
 
-            <ScrollView className="flex-1 px-4 py-6">
+            <ScrollView className="flex-1 px-4 py-2">
+                {/* Dark Mode Toggle - Moved to top for prominence */}
+                {renderDarkModeToggle()}
+                
                 {/* Language Selection */}
                 {renderSection(
                     'Language', 
@@ -171,43 +240,6 @@ const Settings = () => {
                     (value) => handleSettingChange('fontSize', value), 
                     'fontSize'
                 )}
-
-                {/* Dark Mode Toggle */}
-                <View className="mb-6">
-                    <Text 
-                        className="text-lg font-semibold mb-3"
-                        style={{ color: colors.accent }}
-                    >
-                        Appearance
-                    </Text>
-                    <View 
-                        className="rounded-lg p-4 shadow-sm"
-                        style={{ backgroundColor: colors.cardBackground }}
-                    >
-                        <View className="flex-row items-center justify-between">
-                            <View>
-                                <Text 
-                                    className="text-base"
-                                    style={{ color: colors.primaryText }}
-                                >
-                                    Dark Mode
-                                </Text>
-                                <Text 
-                                    className="text-sm"
-                                    style={{ color: colors.secondaryText }}
-                                >
-                                    Enable dark theme
-                                </Text>
-                            </View>
-                            <Switch
-                                value={settings.darkMode}
-                                onValueChange={(value) => handleSettingChange('darkMode', value)}
-                                trackColor={{ false: colors.divider, true: colors.accent }}
-                                thumbColor={settings.darkMode ? colors.buttonText : colors.buttonText}
-                            />
-                        </View>
-                    </View>
-                </View>
             </ScrollView>
         </SafeAreaView>
     );

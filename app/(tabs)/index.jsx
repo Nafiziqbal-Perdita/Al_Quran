@@ -352,43 +352,42 @@ export default function HomeScreen() {
       {/* Content Section */}
       <View className="flex-1" style={{ backgroundColor: colors.background }}>
         {loading ? (
-          <Loading />
+          <Loading message="Fetching Surahs..." />
         ) : error ? (
           <View className="flex-1 items-center justify-center">
             <Text style={{ color: colors.error, fontSize: 18 }}>
               Error loading Surahs
             </Text>
+            <Pressable onPress={onRefresh} style={{ marginTop: 10 }}>
+              <Text style={{ color: colors.accent }}>Retry</Text>
+            </Pressable>
+          </View>
+        ) : data.length === 0 ? (
+          <View className="flex-1 items-center justify-center">
+            <Text style={{ color: colors.secondaryText, fontSize: 16 }}>
+              No Surahs available.
+            </Text>
           </View>
         ) : (
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-            }}
-          >
-            <FlatList
-              data={data}
-              renderItem={({ item }) => <SurahCard item={item} />}
-              keyExtractor={(item) => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 20 }}
-              ListHeaderComponent={ListHeader}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  colors={[colors.accent]} // Android
-                  tintColor={colors.accent} // iOS
-                  progressBackgroundColor={colors.cardBackground}
-                  title="Pull to refresh" // iOS
-                  titleColor={colors.secondaryText} // iOS
-                />
-              }
-            />
-          </View>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => <SurahCard item={item} />}
+            keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+            ListHeaderComponent={ListHeader}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={[colors.accent]} // Android
+                tintColor={colors.accent} // iOS
+                progressBackgroundColor={colors.cardBackground}
+                title="Pull to refresh" // iOS
+                titleColor={colors.secondaryText} // iOS
+              />
+            }
+          />
         )}
       </View>
     </SafeAreaView>

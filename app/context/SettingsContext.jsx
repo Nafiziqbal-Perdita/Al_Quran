@@ -8,28 +8,42 @@ const SettingsContext = createContext();
 // Color palette
 const COLORS = {
   light: {
-    background: '#FFFFFF',
-    primaryText: '#000000',
-    secondaryText: '#004E55',
-    accent: '#E4AF52',
-    buttonPrimary: '#09592C',
+    background: '#F8F9FA',
+    primaryText: '#1A1A2E',
+    secondaryText: '#4A5568',
+    accent: '#26A69A',        // Teal accent
+    buttonPrimary: '#1E88E5',  // Blue primary
+    buttonSecondary: '#E0F2F1',
     buttonText: '#FFFFFF',
     cardBackground: '#FFFFFF',
-    divider: '#E5E7EB',
-    headerBg: '#FFFFFF',
-    error: '#DC2626'
+    cardShadow: 'rgba(0, 0, 0, 0.08)',
+    divider: '#E2E8F0',
+    headerBg: '#F8F9FA',
+    highlightBg: '#E3F2FD',    // Light blue highlight
+    error: '#E53935',
+    success: '#43A047',
+    arabicText: '#16697A',     // Special color for Arabic text
+    verseNumber: '#64B5F6',    // Verse number background
+    prayerTime: '#81C784'      // Prayer time highlight
   },
   dark: {
     background: '#121212',
-    primaryText: '#FFFFFF',
-    secondaryText: '#B3FFFFFF',
-    accent: '#03DAC6',
-    buttonPrimary: '#03DAC6',
-    buttonText: '#000000',
+    primaryText: '#E4E6EB',
+    secondaryText: '#B0B3B8',
+    accent: '#4DB6AC',         // Lighter teal for dark mode
+    buttonPrimary: '#2196F3',  // Brighter blue for dark mode
+    buttonSecondary: '#263238',
+    buttonText: '#FFFFFF',
     cardBackground: '#1E1E1E',
-    divider: '#2C2C2C',
+    cardShadow: 'rgba(0, 0, 0, 0.2)',
+    divider: '#2D2D2D',
     headerBg: '#121212',
-    error: '#CF6679'
+    highlightBg: '#0D47A1',    // Darker blue highlight
+    error: '#EF5350',
+    success: '#66BB6A',
+    arabicText: '#80CBC4',     // Lighter teal for Arabic in dark mode
+    verseNumber: '#1976D2',    // Darker verse number background
+    prayerTime: '#388E3C'      // Darker prayer time highlight
   }
 };
 

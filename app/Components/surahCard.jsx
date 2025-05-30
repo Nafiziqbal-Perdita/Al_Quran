@@ -19,74 +19,65 @@ const SurahCard = ({ item }) => {
       className="mx-4 my-2 p-4 rounded-2xl"
       style={{ 
         backgroundColor: colors.cardBackground,
-        shadowColor: colors.buttonPrimary,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        elevation: 5,
+        shadowColor: colors.cardShadow,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+        elevation: 8,
+        borderWidth: 1,
+        borderColor: colors.divider,
+        overflow: 'hidden',
+        minHeight: 90,
       }}
       onPress={handlePress}
+      activeOpacity={0.94}
+      accessibilityLabel={`Open Surah ${item.transliteration}`}
     >
-      <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center flex-1">
-          <View 
-            className="w-14 h-14 rounded-2xl items-center justify-center mr-4"
-            style={{ 
-              backgroundColor: colors.buttonPrimary,
-              opacity: 0.9,
-            }}
-          >
-            <Text 
-              className="text-white font-bold text-lg"
-              style={{
-                position: 'absolute',
-                textShadowColor: 'rgba(0, 0, 0, 0.2)',
-                textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 2,
-              }}
-            >
-              {item.id}
-            </Text>
-            <Text className="text-white text-4xl opacity-50">۝</Text>
-          </View>
-          
-          <View className="flex-1">
-            <Text 
-              className="text-xl font-semibold mb-1"
-              style={{ 
-                color: colors.primaryText,
-                textShadowColor: 'rgba(0, 0, 0, 0.1)',
-                textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 1,
-              }}
-            >
-              {item.name}
-            </Text>
-            <Text 
-              className="text-sm"
-              style={{ color: colors.secondaryText }}
-            >
-              {item.transliteration}
-            </Text>
-          </View>
-        </View>
-
-        <View className="items-end ml-2">
+      {/* Watermark background */}
+      <View style={{ position: 'absolute', right: -30, top: -30, zIndex: 0 }} pointerEvents="none">
+        <Text style={{
+          fontSize: 90,
+          color: colors.buttonPrimary,
+          opacity: 0.045,
+          fontWeight: 'bold',
+        }}>
+          ﻗ
+        </Text>
+      </View>
+      <View className="flex-row items-center justify-between" style={{ zIndex: 1 }}>
+        <View className="flex-1">
           <Text 
-            className="text-sm font-medium mb-1"
+            className="text-lg font-extrabold tracking-wide mb-1"
+            style={{ color: colors.buttonPrimary, letterSpacing: 0.5 }}
+          >
+            {item.transliteration}
+          </Text>
+          <Text 
+            className="text-2xl font-bold mb-1"
+            style={{ color: colors.primaryText, fontFamily: 'serif', letterSpacing: 1 }}
+          >
+            {item.name}
+          </Text>
+          <Text 
+            className="text-xs font-medium mb-1"
             style={{ color: colors.secondaryText }}
+          >
+            {item.englishName}
+          </Text>
+        </View>
+        <View className="items-end ml-4">
+          <Text 
+            className="text-base font-semibold mb-2"
+            style={{ color: colors.accent, textAlign: 'right' }}
           >
             {item.translation}
           </Text>
           <View 
-            className="px-3 py-1 rounded-full"
-            style={{ backgroundColor: `${colors.buttonPrimary}20` }}
+            className="px-3 py-1 rounded-full mt-1"
+            style={{ backgroundColor: colors.buttonSecondary, minWidth: 70, alignItems: 'center' }}
           >
             <Text 
-              className="text-xs"
+              className="text-xs font-bold tracking-wider"
               style={{ color: colors.buttonPrimary }}
             >
               {item.total_verses} verses

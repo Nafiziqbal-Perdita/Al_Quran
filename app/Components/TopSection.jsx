@@ -1,4 +1,4 @@
-import { Image, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useSettings } from "../context/SettingsContext";
 
 const TopSection = () => {
@@ -6,52 +6,87 @@ const TopSection = () => {
   const colors = getColors();
 
   return (
-    <View 
-      className="flex-row justify-between items-center px-4 py-1 rounded-b-3xl shadow-lg h-32"
-      style={{ 
-        backgroundColor: colors.cardBackground,
-        shadowColor: colors.buttonPrimary,
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 5,
-        height: 64, // h-16 (64px) for a compact but not cramped header
-        minHeight: 64,
-        maxHeight: 64,
-        paddingTop: 8,
-        paddingBottom: 8,
-      }}
-    >
-      <View className="flex-row items-center">
+    <View style={{ position: "relative", zIndex: 1 }}>
+      {/* Watermark logo background */}
+      <Image
+        source={require("../../assets/images/mainIcon.png")}
+        style={[
+          StyleSheet.absoluteFill,
+          {
+            zIndex: 0,
+            opacity: 0.07,
+            width: 180,
+            height: 180,
+            alignSelf: "center",
+            top: -30,
+          },
+        ]}
+        pointerEvents="none"
+        resizeMode="contain"
+      />
+      <View
+        className="flex-row items-center px-4 py-1 rounded-b-3xl shadow-lg"
+        style={{
+          backgroundColor: colors.cardBackground,
+          shadowColor: colors.buttonPrimary,
+          shadowOpacity: 0.1,
+          shadowRadius: 10,
+          elevation: 5,
+          height: 64,
+          minHeight: 64,
+          maxHeight: 64,
+          paddingTop: 8,
+          paddingBottom: 8,
+          zIndex: 1,
+        }}
+      >
         <Image
           source={require("../../assets/images/mainIcon.png")}
           style={{
-            width: 40, // smaller icon for compact header
+            width: 40,
             height: 40,
             resizeMode: "contain",
             borderRadius: 10,
+            marginRight: 12,
+            zIndex: 1,
           }}
         />
-        <View className="ml-3">
+        <View>
           <Text
             style={{
-              fontSize: 15, // smaller font
-              fontWeight: '600',
+              fontSize: 17,
+              fontWeight: "700",
               color: colors.buttonPrimary,
               textShadowColor: "rgba(228, 175, 82, 0.15)",
               textShadowOffset: { width: 1, height: 1 },
               textShadowRadius: 2,
+              zIndex: 1,
             }}
           >
             Al Quran
           </Text>
-          <View className="flex-row items-center mt-0.5">
-            <View 
-              className="w-8 h-[2px] mr-2 rounded-full" 
-              style={{ backgroundColor: colors.accent }} 
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 2,
+            }}
+          >
+            <View
+              style={{
+                width: 32,
+                height: 2,
+                marginRight: 8,
+                borderRadius: 999,
+                backgroundColor: colors.accent,
+              }}
             />
-            <Text 
-              className="text-[11px] font-medium"
-              style={{ color: colors.secondaryText }}
+            <Text
+              style={{
+                fontSize: 11,
+                fontWeight: "500",
+                color: colors.secondaryText,
+              }}
             >
               The Holy Book
             </Text>

@@ -278,16 +278,28 @@ const SurahDetails = () => {
             className="flex-1"
             style={{ backgroundColor: colors.background }}
         >
+            {/* Watermark background for elegance */}
+            <View style={{ position: 'absolute', top: 0, left: 0, right: 0, alignItems: 'center', zIndex: 0 }} pointerEvents="none">
+                <Text style={{
+                    fontSize: 180,
+                    color: colors.buttonPrimary,
+                    opacity: 0.04,
+                    fontWeight: 'bold',
+                    marginTop: 40,
+                }}>﷽</Text>
+            </View>
             <FlatList
                 data={Array.isArray(data?.verses) ? data.verses : []}
                 renderItem={renderVerse}
                 keyExtractor={item => item.id ? item.id.toString() : Math.random().toString()}
                 contentContainerStyle={{ 
                     padding: 16, 
-                    paddingBottom: 32 
+                    paddingBottom: 32,
+                    zIndex: 1,
                 }}
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={<SurahHeader />}
+                style={{ zIndex: 1 }}
             />
         </SafeAreaView>
     );

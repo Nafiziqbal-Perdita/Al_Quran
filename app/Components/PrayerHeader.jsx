@@ -1,29 +1,51 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from 'react';
 import {
-    Linking,
-    Platform,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Linking,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { useSettings } from "../context/SettingsContext";
 
-const PrayerTimeItem = ({ name, time, icon, colors }) => (
+const PrayerTimeItem = ({ name, time, icon, colors, isActive = false }) => (
   <View 
-    className="flex-row items-center justify-between py-1.5 border-b"
-    style={{ borderBottomColor: colors?.divider || '#ccc' }}
+    className="flex-row items-center justify-between py-2 border-b"
+    style={{ 
+      borderBottomColor: colors?.divider || '#ccc',
+      backgroundColor: isActive ? `${colors?.prayerTime}15` : 'transparent',
+      borderRadius: isActive ? 8 : 0,
+      paddingHorizontal: isActive ? 8 : 0,
+    }}
   >
     <View className="flex-row items-center">
-      <Ionicons name={icon} size={18} color={colors?.accent || '#000'} />
+      <Ionicons 
+        name={icon} 
+        size={18} 
+        color={isActive ? colors?.prayerTime : colors?.accent} 
+      />
       <Text 
         className="ml-2 font-medium"
-        style={{ color: colors?.primaryText || '#000', fontSize: 13 }}
+        style={{ 
+          color: isActive ? colors?.prayerTime : colors?.primaryText, 
+          fontSize: 13,
+          fontWeight: isActive ? '600' : '500',
+        }}
       >
         {name || '--'}
       </Text>
     </View>
-    <Text style={{ color: colors?.secondaryText || '#888', fontSize: 13 }}>{time || '--:--'}</Text>
+    <Text 
+      style={{ 
+        color: isActive ? colors?.prayerTime : colors?.secondaryText, 
+        fontSize: 13,
+        fontWeight: isActive ? '600' : '400',
+      }}
+    >
+      {time || '--:--'}
+    </Text>
   </View>
 );
 
@@ -134,7 +156,7 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus, loading }) => {
     return (
       <View className="h-auto mt-2 mb-2 rounded-b-3xl pb-4" style={{ backgroundColor: colors.headerBg }}>
         <View className="rounded-2xl p-4 shadow-lg items-center" style={{ backgroundColor: colors.cardBackground }}>
-          <Ionicons name="time-outline" size={36} color={colors.accent} />
+          <ActivityIndicator size="large" color={colors.accent} />
           <Text className="font-medium mt-2" style={{ color: colors.primaryText }}>
             Fetching prayer times...
           </Text>
@@ -160,10 +182,19 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus, loading }) => {
       style={{ backgroundColor: colors.headerBg }}
     >
       <View 
-        className="mt-2 rounded-2xl p-3 shadow-lg"
-        style={{ backgroundColor: colors.cardBackground }}
+        className="mt-2 rounded-3xl p-4 mx-4 shadow-lg"
+        style={{ 
+          backgroundColor: colors.cardBackground,
+          shadowColor: colors.cardShadow,
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.2,
+          shadowRadius: 8,
+          elevation: 8,
+          borderWidth: 1,
+          borderColor: colors.divider,
+        }}
       >
-        <View className="flex-row justify-between items-center mb-2">
+        <View className="flex-row justify-between items-center mb-3">
           <View>
             <Text 
               className="text-sm"
@@ -180,7 +211,14 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus, loading }) => {
           </View>
           <View 
             className="px-3 py-1 rounded-full"
-            style={{ backgroundColor: colors.buttonPrimary }}
+            style={{ 
+              backgroundColor: colors.buttonPrimary,
+              shadowColor: colors.cardShadow,
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              elevation: 2,
+            }}
           >
             <Text 
               className="font-medium"
