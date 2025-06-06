@@ -23,12 +23,13 @@ const SurahDetails = () => {
         getColors
     } = useSettings();
     const colors = getColors();
+    console.log("link",rawId);
 
     const {
         data,
         error,
         loading
-    } = useFetch(() => fetchSurah({ id, language: getLanguageCode() }));
+    } = useFetch(() => fetchSurah({ link:id }));
 
     const toggleSaveVerse = async (verseId, verseText, verseTranslation) => {
         if (!data) return;
@@ -96,76 +97,71 @@ const SurahDetails = () => {
     }
 
     const renderVerse = ({ item, index }) => (
-        <View 
-            className="flex-row items-start mb-4 px-2"
-            style={{ 
-                opacity: 1,
-                transform: [{ scale: 1 }],
-            }}
-        >
-            <View 
-                className="w-10 h-10 rounded-xl items-center justify-center mt-1 mr-3"
-                style={{ 
-                    backgroundColor: `${colors.buttonPrimary}15`,
+        <View className="flex-row items-start mb-5 px-2">
+            {/* Modern verse number badge with accent border and shadow */}
+            <View
+                className="w-10 h-10 rounded-full border-2 items-center justify-center mt-2 mr-4 shadow-sm"
+                style={{
+                    borderColor: colors.accent,
+                    backgroundColor: colors.background,
+                    shadowColor: colors.buttonPrimary,
+                    elevation: 2,
                 }}
             >
-                <Text 
-                    className="font-bold text-lg"
-                    style={{ color: colors.buttonPrimary }}
-                >
-                    {item.id}
-                </Text>
+                <Text className="text-base" style={{ color: colors.accent, fontWeight: '600' }}>{item.id}</Text>
             </View>
 
-            <View 
-                className="flex-1 rounded-2xl p-5"
-                style={{ 
+            {/* Verse card with modern styling */}
+            <View
+                className="flex-1 rounded-2xl py-4 px-4 shadow"
+                style={{
                     backgroundColor: colors.cardBackground,
                     shadowColor: colors.buttonPrimary,
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.05,
-                    shadowRadius: 4,
                     elevation: 3,
                 }}
             >
-                <View className="flex-row justify-between items-start mb-4">
-                    <TouchableOpacity 
+                <View className="flex-row justify-between items-start mb-2">
+                    <TouchableOpacity
                         onPress={() => toggleSaveVerse(item.id, item.text, item.translation)}
-                        className="p-2 rounded-xl"
-                        style={{ 
-                            backgroundColor: isVerseSaved(id, item.id) 
-                                ? `${colors.accent}15` 
-                                : 'transparent'
-                        }}
+                        className="p-1.5 rounded-xl"
+                        style={{ backgroundColor: isVerseSaved(id, item.id) ? `${colors.accent}15` : 'transparent' }}
                     >
-                        <Ionicons 
-                            name={isVerseSaved(id, item.id) ? "bookmark" : "bookmark-outline"} 
-                            size={24} 
+                        <Ionicons
+                            name={isVerseSaved(id, item.id) ? 'bookmark' : 'bookmark-outline'}
+                            size={20}
                             color={isVerseSaved(id, item.id) ? colors.accent : colors.secondaryText}
                         />
                     </TouchableOpacity>
-
+                </View>
+                {/* Arabic text (not bold) */}
+                <Text
+                    className="text-right mb-1"
+                    style={{
+                        fontSize: getFontSizeValue('arabic'),
+                        color: colors.primaryText,
+                        lineHeight: getFontSizeValue('arabic') * 2,
+                    }}
+                >
+                    {item.text}
+                </Text>
+                {/* Transliteration */}
+                {item.transliteration && (
                     <Text
-                        className="flex-1 ml-4"
-                        style={{ 
-                            textAlign: 'right',
-                            fontSize: getFontSizeValue('arabic'),
-                            color: colors.primaryText,
-                            lineHeight: getFontSizeValue('arabic') * 2,
+                        className="text-right italic text-accent opacity-85 mb-1"
+                        style={{
+                            fontSize: getFontSizeValue('translation'),
+                            color: colors.accent,
                         }}
                     >
-                        {item.text}
+                        {item.transliteration}
                     </Text>
-                </View>
-
-                <View 
-                    className="h-[1px] my-4 rounded-full"
-                    style={{ backgroundColor: `${colors.buttonPrimary}10` }}
-                />
-
+                )}
+                {/* Divider */}
+                <View className="h-px my-2 rounded-full" style={{ backgroundColor: `${colors.buttonPrimary}10` }} />
+                {/* Translation */}
                 <Text
-                    style={{ 
-                        textAlign: 'left',
+                    className="text-left"
+                    style={{
                         fontSize: getFontSizeValue('translation'),
                         color: colors.secondaryText,
                         lineHeight: getFontSizeValue('translation') * 1.6,
@@ -195,17 +191,7 @@ const SurahDetails = () => {
                     backgroundColor: `${colors.buttonPrimary}08`,
                 }}
             >
-                <View 
-                    className="w-16 h-16 rounded-2xl items-center justify-center mb-6"
-                    style={{ backgroundColor: `${colors.buttonPrimary}15` }}
-                >
-                    <Text 
-                        className="text-2xl font-bold"
-                        style={{ color: colors.buttonPrimary }}
-                    >
-                        {id}
-                    </Text>
-                </View>
+              
 
                 <Text 
                     className="text-4xl font-bold mb-4"

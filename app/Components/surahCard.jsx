@@ -10,9 +10,10 @@ const SurahCard = ({ item }) => {
   const handlePress = () => {
     router.push({
       pathname: "/surah/[id]",
-      params: { id: item.id }
+      params: { id: item.link }
     });
   };
+  // console.log("Surah card", item);
 
   return (
     <TouchableOpacity 

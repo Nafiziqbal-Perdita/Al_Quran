@@ -31,12 +31,11 @@ export const fetchSurahs = async ({ language }) => {
   }
 };
 
-export const fetchSurah = async ({ id, language }) => {
-  const endPoint = `https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/${language}/${id}.json`;
-
+export const fetchSurah = async ({link }) => {
+  const endPoint = link;
   try {
     // Try to get cached data for this surah and language
-    const cacheKey = `${fetchSurahkey}_${language}_${id}`;
+    const cacheKey = `${link}`;
     const cachedData = await AsyncStorage.getItem(cacheKey);
 
     if (cachedData) {

@@ -3,12 +3,13 @@ import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
-  AppState, FlatList,
+  AppState,
+  FlatList,
   Modal,
   Pressable,
   RefreshControl,
   Text,
-  View
+  View,
 } from "react-native";
 // import {
 //   BannerAd,
@@ -317,13 +318,8 @@ export default function HomeScreen() {
           </View>
         </View>
       </Modal>
-      <TopSection/>
-      <PrayerHeader
-        prayerData={prayerData}
-        onRetry={getLocation}
-        permissionStatus={permissionStatus}
-        loading={prayerLoading}
-      />
+
+      <TopSection />
 
       {/* Ad Banner Section */}
       <View
@@ -331,7 +327,7 @@ export default function HomeScreen() {
         style={{ backgroundColor: colors.cardBackground }}
       >
         {!adLoaded && (
-          <Text 
+          <Text
             className="text-center py-1"
             style={{ color: colors.secondaryText }}
           >
@@ -375,7 +371,17 @@ export default function HomeScreen() {
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
-            ListHeaderComponent={ListHeader}
+            ListHeaderComponent={
+              <>
+                <PrayerHeader
+                  prayerData={prayerData}
+                  onRetry={getLocation}
+                  permissionStatus={permissionStatus}
+                  loading={prayerLoading}
+                />
+                <ListHeader />
+              </>
+            }
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
