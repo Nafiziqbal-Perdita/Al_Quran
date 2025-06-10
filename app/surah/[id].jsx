@@ -23,7 +23,7 @@ const SurahDetails = () => {
         getColors
     } = useSettings();
     const colors = getColors();
-    console.log("link",rawId);
+   
 
     const {
         data,
@@ -39,11 +39,11 @@ const SurahDetails = () => {
             } else {
                 await saveVerse({
                     verseId,
-                    surahId: id,
+                    surahId: id, // FIX: always use surahId for consistency
                     surahName: data.name || '',
                     surahTranslation: data.translation || '',
                     verseText,
-                    verseTranslation
+                    verseTranslation,
                 });
             }
         } catch (error) {

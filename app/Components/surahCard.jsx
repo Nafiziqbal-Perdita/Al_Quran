@@ -13,7 +13,9 @@ const SurahCard = ({ item }) => {
       params: { id: item.link }
     });
   };
-  // console.log("Surah card", item);
+
+
+
 
   return (
     <TouchableOpacity 
