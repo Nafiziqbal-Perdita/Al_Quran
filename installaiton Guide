@@ -1,0 +1,33 @@
+✅ Step 2: Log in to Expo
+bash
+Copy
+Edit
+npx expo login
+✅ Step 3: Configure EAS
+Inside your Expo project folder:
+
+bash
+Copy
+Edit
+eas build:configure
+Follow the prompts:
+
+Choose Android
+
+Choose Managed workflow
+
+✅ Step 4: Build APK
+To build a debug APK (installable directly):
+
+bash
+Copy
+Edit
+eas build --platform android --profile preview
+Or to build a production APK:
+
+bash
+Copy
+Edit
+eas build --platform android --profile production
+
+⚠️ By default, EAS builds an AAB (for Play Store). To get an APK, you need to customize your profile (see below).

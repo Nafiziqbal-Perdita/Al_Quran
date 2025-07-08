@@ -1,0 +1,18 @@
+Al Quran (আল কুরআন) – Global is a modern Quran app for Muslims worldwide, especially Bengali speakers and beginners. Read all 114 Surahs (সূরা) with verse-by-verse translations in English, বাংলা, Arabic, Urdu, and more. The app features a clean, user-friendly interface with customizable font sizes and Dark Mode for a better reading experience.
+
+🟢 Offline Support: Previously viewed Surahs and content can be accessed offline. Internet is required on first use or when changing language.
+Key Features:
+
+🌐 Multi-language Support: বাংলা, English, Arabic, Urdu & more
+📖 Full Quran: All 114 Surahs with clear translations
+🔖 Bookmark Ayahs: Save favorite verses for later
+🕒 Prayer Times: Accurate নামাজের সময়সূচী using your location
+🌙 Dark Mode & Font Size Control: Read comfortably anytime
+📶 Partial Offline Access: Read Surahs and translations you've viewed before, even without internet
+🎨 Modern UI: Smooth design with NativeWind styling
+👶 Beginner-Friendly: Easy for new learners
+📢 Free with Ads: Supports development with AdMob banners
+
+Perfect for global Muslims and Bengali readers, Al Quran – Global helps you read, reflect, and stay connected spiritually — anywhere, anytime.
+
+অফলাইনে পড়ুন আগের দেখা সূরা, বাংলা অনুবাদ সহ ১১৪ সূরা, আজই ডাউনলোড করুন!
