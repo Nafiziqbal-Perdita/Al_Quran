@@ -11,10 +11,10 @@ import {
   Text,
   View,
 } from "react-native";
-import {
-  BannerAd,
-  BannerAdSize
-} from "react-native-google-mobile-ads";
+// import {
+//   BannerAd,
+//   BannerAdSize
+// } from "react-native-google-mobile-ads";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ListHeader from "../Components/ListHeader";
 import Loading from "../Components/Loading";
@@ -320,7 +320,8 @@ export default function HomeScreen() {
       </Modal>
 
  {/* Ad Banner Section */}
-      <View
+ {/* asdf */}
+      {/* <View
         className="w-full py-2"
         style={{ backgroundColor: colors.cardBackground }}
       >
@@ -341,7 +342,7 @@ export default function HomeScreen() {
           onAdLoaded={() => setAdLoaded(true)}
           onAdFailedToLoad={() => setAdLoaded(false)}
         />
-      </View>
+      </View> */}
 
       <TopSection />
 
