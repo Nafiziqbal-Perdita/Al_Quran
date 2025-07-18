@@ -97,78 +97,185 @@ const SurahDetails = () => {
     }
 
     const renderVerse = ({ item, index }) => (
-        <View className="flex-row items-start mb-5 px-2">
-            {/* Modern verse number badge with accent border and shadow */}
+        <View className="flex-row items-start mb-8 px-3">
+            {/* Premium verse number badge with advanced glassmorphism */}
             <View
-                className="w-10 h-10 rounded-full border-2 items-center justify-center mt-2 mr-4 shadow-sm"
+                className="w-14 h-14 rounded-2xl items-center justify-center mt-3 mr-5 shadow-lg"
                 style={{
-                    borderColor: colors.accent,
-                    backgroundColor: colors.background,
-                    shadowColor: colors.buttonPrimary,
-                    elevation: 2,
+                    background: 'linear-gradient(135deg, rgba(70, 144, 226, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%)',
+                    backgroundColor: `${colors.accent}12`,
+                    borderWidth: 2.5,
+                    borderColor: `${colors.accent}25`,
+                    shadowColor: colors.accent,
+                    shadowOffset: { width: 0, height: 6 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 12,
+                    elevation: 8,
                 }}
             >
-                <Text className="text-base" style={{ color: colors.accent, fontWeight: '600' }}>{item.id}</Text>
+                <Text 
+                    className="text-lg font-bold" 
+                    style={{ 
+                        color: colors.accent, 
+                        fontWeight: '700',
+                        textShadowColor: colors.primaryText === '#F7FAFC' ? 'rgba(0, 0, 0, 0.4)' : `${colors.accent}30`,
+                        textShadowOffset: { width: 0, height: 1 },
+                        textShadowRadius: 2,
+                    }}
+                >
+                    {item.id}
+                </Text>
             </View>
 
-            {/* Verse card with modern styling */}
+            {/* Verse card with premium glassmorphic styling */}
             <View
-                className="flex-1 rounded-2xl py-4 px-4 shadow"
+                className="flex-1 rounded-3xl py-6 px-6 shadow-2xl"
                 style={{
-                    backgroundColor: colors.cardBackground,
-                    shadowColor: colors.buttonPrimary,
-                    elevation: 3,
+                    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                    backdropFilter: 'blur(30px)',
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    shadowColor: colors.accent,
+                    shadowOffset: { width: 0, height: 12 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 25,
+                    elevation: 16,
                 }}
             >
-                <View className="flex-row justify-between items-start mb-2">
-                    <TouchableOpacity
-                        onPress={() => toggleSaveVerse(item.id, item.text, item.translation)}
-                        className="p-1.5 rounded-xl"
-                        style={{ backgroundColor: isVerseSaved(id, item.id) ? `${colors.accent}15` : 'transparent' }}
-                    >
-                        <Ionicons
-                            name={isVerseSaved(id, item.id) ? 'bookmark' : 'bookmark-outline'}
-                            size={20}
-                            color={isVerseSaved(id, item.id) ? colors.accent : colors.secondaryText}
-                        />
-                    </TouchableOpacity>
-                </View>
-                {/* Arabic text (not bold) */}
-                <Text
-                    className="text-right mb-1"
-                    style={{
-                        fontSize: getFontSizeValue('arabic'),
-                        color: colors.primaryText,
-                        lineHeight: getFontSizeValue('arabic') * 2,
-                    }}
-                >
-                    {item.text}
-                </Text>
-                {/* Transliteration */}
-                {item.transliteration && (
+                {/* Advanced glassmorphic background with triple-layer effect */}
+                <View 
+                  className="absolute inset-0 rounded-3xl"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+                    backgroundColor: colors.cardBackground,
+                    opacity: 0.95,
+                  }}
+                />
+                
+                {/* Premium gradient accent border with animation effect */}
+                <View 
+                  className="absolute top-0 left-0 right-0 h-1.5 rounded-t-3xl"
+                  style={{
+                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
+                    backgroundColor: colors.accent,
+                    opacity: 0.6,
+                  }}
+                />
+                
+                {/* Inner highlight for premium depth */}
+                <View 
+                  className="absolute inset-1 rounded-3xl"
+                  style={{
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 255, 255, 0.08)',
+                  }}
+                />
+                
+                <View className="relative z-10">
+                    <View className="flex-row justify-between items-start mb-4">
+                        <TouchableOpacity
+                            onPress={() => toggleSaveVerse(item.id, item.text, item.translation)}
+                            className="p-3 rounded-2xl"
+                            style={{ 
+                              background: isVerseSaved(id, item.id) 
+                                ? 'linear-gradient(135deg, rgba(70, 144, 226, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)'
+                                : 'transparent',
+                              backgroundColor: isVerseSaved(id, item.id) 
+                                ? `${colors.accent}15` 
+                                : 'transparent',
+                              borderWidth: 1.5,
+                              borderColor: isVerseSaved(id, item.id) 
+                                ? `${colors.accent}30` 
+                                : 'rgba(255, 255, 255, 0.1)',
+                              shadowColor: colors.accent,
+                              shadowOffset: { width: 0, height: 4 },
+                              shadowOpacity: isVerseSaved(id, item.id) ? 0.25 : 0,
+                              shadowRadius: 8,
+                              elevation: isVerseSaved(id, item.id) ? 6 : 0,
+                            }}
+                        >
+                            <Ionicons
+                                name={isVerseSaved(id, item.id) ? 'bookmark' : 'bookmark-outline'}
+                                size={24}
+                                color={isVerseSaved(id, item.id) ? colors.accent : colors.secondaryText}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    
+                    {/* Arabic text with premium typography */}
                     <Text
-                        className="text-right italic text-accent opacity-85 mb-1"
+                        className="text-right mb-4"
                         style={{
-                            fontSize: getFontSizeValue('translation'),
-                            color: colors.accent,
+                            fontSize: getFontSizeValue('arabic'),
+                            color: colors.primaryText,
+                            lineHeight: getFontSizeValue('arabic') * 2.2,
+                            textShadowColor: colors.primaryText === '#F7FAFC' ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.15)',
+                            textShadowOffset: { width: 0, height: 2 },
+                            textShadowRadius: 3,
+                            fontWeight: '500',
+                            letterSpacing: 0.3,
                         }}
                     >
-                        {item.transliteration}
+                        {item.text}
                     </Text>
-                )}
-                {/* Divider */}
-                <View className="h-px my-2 rounded-full" style={{ backgroundColor: `${colors.buttonPrimary}10` }} />
-                {/* Translation */}
-                <Text
-                    className="text-left"
-                    style={{
-                        fontSize: getFontSizeValue('translation'),
-                        color: colors.secondaryText,
-                        lineHeight: getFontSizeValue('translation') * 1.6,
-                    }}
-                >
-                    {item.translation}
-                </Text>
+                    
+                    {/* Transliteration with glassmorphic background */}
+                    {item.transliteration && (
+                        <View 
+                            className="mb-3 p-3 rounded-xl"
+                            style={{ 
+                              backgroundColor: `${colors.accent}08`,
+                              borderWidth: 1,
+                              borderColor: `${colors.accent}15`,
+                            }}
+                        >
+                            <Text
+                                className="text-right italic"
+                                style={{
+                                    fontSize: getFontSizeValue('translation'),
+                                    color: colors.accent,
+                                    opacity: 0.9,
+                                }}
+                            >
+                                {item.transliteration}
+                            </Text>
+                        </View>
+                    )}
+                    
+                    {/* Enhanced divider */}
+                    <View 
+                        className="h-0.5 my-3 rounded-full" 
+                        style={{ 
+                          backgroundColor: `${colors.accent}20`,
+                          shadowColor: colors.accent,
+                          shadowOffset: { width: 0, height: 1 },
+                          shadowOpacity: 0.1,
+                          shadowRadius: 2,
+                          elevation: 1,
+                        }} 
+                    />
+                    
+                    {/* Translation with glassmorphic background */}
+                    <View 
+                        className="p-4 rounded-2xl"
+                        style={{ 
+                          backgroundColor: `${colors.highlightBg || colors.buttonPrimary}06`,
+                          borderWidth: 1,
+                          borderColor: `${colors.highlightBg || colors.buttonPrimary}12`,
+                        }}
+                    >
+                        <Text
+                            className="text-left"
+                            style={{
+                                fontSize: getFontSizeValue('translation'),
+                                color: colors.secondaryText,
+                                lineHeight: getFontSizeValue('translation') * 1.6,
+                            }}
+                        >
+                            {item.translation}
+                        </Text>
+                    </View>
+                </View>
             </View>
         </View>
     );
@@ -264,14 +371,17 @@ const SurahDetails = () => {
             className="flex-1"
             style={{ backgroundColor: colors.background }}
         >
-            {/* Watermark background for elegance */}
+            {/* Premium watermark background with enhanced glow */}
             <View style={{ position: 'absolute', top: 0, left: 0, right: 0, alignItems: 'center', zIndex: 0 }} pointerEvents="none">
                 <Text style={{
-                    fontSize: 180,
+                    fontSize: 220,
                     color: colors.buttonPrimary,
-                    opacity: 0.04,
-                    fontWeight: 'bold',
-                    marginTop: 40,
+                    opacity: colors.primaryText === '#FFFFFF' ? 0.05 : 0.03,
+                    fontWeight: '800',
+                    marginTop: 60,
+                    textShadowColor: colors.buttonPrimary,
+                    textShadowOffset: { width: 0, height: 4 },
+                    textShadowRadius: 8,
                 }}>﷽</Text>
             </View>
             <FlatList

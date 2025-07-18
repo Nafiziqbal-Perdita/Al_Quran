@@ -1,12 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from 'react';
 import {
-  ActivityIndicator,
-  Linking,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Linking,
+    Platform,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 import { useSettings } from "../context/SettingsContext";
 
@@ -182,137 +182,188 @@ const PrayerHeader = ({ prayerData, onRetry, permissionStatus, loading }) => {
       style={{ backgroundColor: colors.headerBg }}
     >
       <View 
-        className="mt-2 rounded-3xl p-4 mx-4 shadow-lg"
+        className="mt-2 rounded-3xl p-6 mx-4 shadow-2xl"
         style={{ 
-          backgroundColor: colors.cardBackground,
-          shadowColor: colors.cardShadow,
-          shadowOffset: { width: 0, height: 6 },
-          shadowOpacity: 0.2,
-          shadowRadius: 8,
-          elevation: 8,
-          borderWidth: 1,
-          borderColor: colors.divider,
+          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+          backdropFilter: 'blur(30px)',
+          shadowColor: colors.accent,
+          shadowOffset: { width: 0, height: 16 },
+          shadowOpacity: 0.3,
+          shadowRadius: 25,
+          elevation: 20,
+          borderWidth: 1.5,
+          borderColor: 'rgba(255, 255, 255, 0.15)',
         }}
       >
-        <View className="flex-row justify-between items-center mb-3">
-          <View>
-            <Text 
-              className="text-sm"
-              style={{ color: colors.secondaryText }}
+        {/* Advanced glassmorphic background with triple-layer effect */}
+        <View 
+          className="absolute inset-0 rounded-3xl"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+            backgroundColor: colors.cardBackground,
+            opacity: 0.95,
+          }}
+        />
+        
+        {/* Premium gradient accent border with glow effect */}
+        <View 
+          className="absolute inset-0 rounded-3xl"
+          style={{
+            borderWidth: 2,
+            borderColor: 'transparent',
+            background: 'linear-gradient(135deg, #667eea, #764ba2, #f093fb)',
+            opacity: 0.4,
+          }}
+        />
+        
+        {/* Inner highlight for depth */}
+        <View 
+          className="absolute inset-1 rounded-3xl"
+          style={{
+            borderWidth: 1,
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+          }}
+        />
+        
+        <View className="relative z-10">
+          <View className="flex-row justify-between items-center mb-4">
+            <View>
+              <Text 
+                className="text-sm font-medium"
+                style={{ color: colors.secondaryText }}
+              >
+                Today
+              </Text>
+              <Text 
+                className="font-bold text-lg"
+                style={{ 
+                  color: colors.primaryText,
+                  textShadowColor: 'rgba(0, 0, 0, 0.1)',
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 2,
+                }}
+              >
+                {prayerData?.data?.date?.readable || "--"}
+              </Text>
+            </View>
+            <View 
+              className="px-5 py-3 rounded-2xl"
+              style={{ 
+                background: 'linear-gradient(135deg, rgba(78, 144, 226, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)',
+                backgroundColor: `${colors.buttonPrimary}15`,
+                borderWidth: 1.5,
+                borderColor: `${colors.buttonPrimary}25`,
+                shadowColor: colors.buttonPrimary,
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: 0.2,
+                shadowRadius: 12,
+                elevation: 6,
+              }}
             >
-              Today
-            </Text>
-            <Text 
-              className="font-semibold text-base"
-              style={{ color: colors.primaryText }}
-            >
-              {prayerData?.data?.date?.readable || "--"}
-            </Text>
+              <Text 
+                className="font-bold text-sm"
+                style={{ 
+                  color: colors.buttonPrimary,
+                  textShadowColor: colors.primaryText === '#F7FAFC' ? 'rgba(0, 0, 0, 0.4)' : `${colors.buttonPrimary}30`,
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 2,
+                  letterSpacing: 0.3,
+                  fontWeight: '600',
+                }}
+              >
+                {hijri?.day || "--"} {" "}
+                {hijriMonth?.en || "--"}
+              </Text>
+            </View>
           </View>
-          <View 
-            className="px-3 py-1 rounded-full"
+
+          <View className="flex-row justify-between mb-3">
+            <View className="flex-row items-center">
+              <Ionicons name="sunny" size={20} color={colors.accent} />
+              <View className="ml-2">
+                <Text 
+                  className="text-sm"
+                  style={{ color: colors.secondaryText }}
+                >
+                  Sunrise
+                </Text>
+                <Text 
+                  className="font-medium"
+                  style={{ color: colors.primaryText }}
+                >
+                  {formatTime(timings?.Sunrise)}
+                </Text>
+              </View>
+            </View>
+            <View className="flex-row items-center">
+              <Ionicons name="cloudy-night" size={20} color={colors.accent} />
+              <View className="ml-2">
+                <Text 
+                  className="text-sm"
+                  style={{ color: colors.secondaryText }}
+                >
+                  Sunset
+                </Text>
+                <Text 
+                  className="font-medium"
+                  style={{ color: colors.primaryText }}
+                >
+                  {formatTime(timings?.Sunset)}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <TouchableOpacity 
+            onPress={() => setIsExpanded(!isExpanded)}
+            className="items-center py-3 border-t rounded-b-2xl"
             style={{ 
-              backgroundColor: colors.buttonPrimary,
-              shadowColor: colors.cardShadow,
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 4,
-              elevation: 2,
+              borderTopColor: `${colors.divider}50`,
+              backgroundColor: `${colors.accent}05`,
             }}
           >
-            <Text 
-              className="font-medium"
-              style={{ color: colors.buttonText }}
-            >
-              {hijri?.day || "--"} {" "}
-              {hijriMonth?.en || "--"}
-            </Text>
-          </View>
-        </View>
+            <Ionicons 
+              name={isExpanded ? "chevron-up" : "chevron-down"} 
+              size={24} 
+              color={colors.accent} 
+            />
+          </TouchableOpacity>
 
-        <View className="flex-row justify-between mb-2">
-          <View className="flex-row items-center">
-            <Ionicons name="sunny" size={20} color={colors.accent} />
-            <View className="ml-2">
-              <Text 
-                className="text-sm"
-                style={{ color: colors.secondaryText }}
-              >
-                Sunrise
-              </Text>
-              <Text 
-                className="font-medium"
-                style={{ color: colors.primaryText }}
-              >
-                {formatTime(timings?.Sunrise)}
-              </Text>
+          {isExpanded && (
+            <View className="mt-2 p-3 rounded-2xl" style={{ backgroundColor: `${colors.cardBackground}80` }}>
+              <PrayerTimeItem
+                name="Fajr"
+                time={formatTime(timings?.Fajr)}
+                icon="sunny-outline"
+                colors={colors}
+              />
+              <PrayerTimeItem
+                name="Dhuhr"
+                time={formatTime(timings?.Dhuhr)}
+                icon="sunny"
+                colors={colors}
+              />
+              <PrayerTimeItem
+                name="Asr"
+                time={formatTime(timings?.Asr)}
+                icon="partly-sunny-outline"
+                colors={colors}
+              />
+              <PrayerTimeItem
+                name="Maghrib"
+                time={formatTime(timings?.Maghrib)}
+                icon="cloudy-night"
+                colors={colors}
+              />
+              <PrayerTimeItem
+                name="Isha"
+                time={formatTime(timings?.Isha)}
+                icon="moon"
+                colors={colors}
+              />
             </View>
-          </View>
-          <View className="flex-row items-center">
-            <Ionicons name="cloudy-night" size={20} color={colors.accent} />
-            <View className="ml-2">
-              <Text 
-                className="text-sm"
-                style={{ color: colors.secondaryText }}
-              >
-                Sunset
-              </Text>
-              <Text 
-                className="font-medium"
-                style={{ color: colors.primaryText }}
-              >
-                {formatTime(timings?.Sunset)}
-              </Text>
-            </View>
-          </View>
+          )}
         </View>
-
-        <TouchableOpacity 
-          onPress={() => setIsExpanded(!isExpanded)}
-          className="items-center py-2 border-t"
-          style={{ borderTopColor: colors.divider }}
-        >
-          <Ionicons 
-            name={isExpanded ? "chevron-up" : "chevron-down"} 
-            size={24} 
-            color={colors.accent} 
-          />
-        </TouchableOpacity>
-
-        {isExpanded && (
-          <View className="mt-1">
-            <PrayerTimeItem
-              name="Fajr"
-              time={formatTime(timings?.Fajr)}
-              icon="sunny-outline"
-              colors={colors}
-            />
-            <PrayerTimeItem
-              name="Dhuhr"
-              time={formatTime(timings?.Dhuhr)}
-              icon="sunny"
-              colors={colors}
-            />
-            <PrayerTimeItem
-              name="Asr"
-              time={formatTime(timings?.Asr)}
-              icon="partly-sunny-outline"
-              colors={colors}
-            />
-            <PrayerTimeItem
-              name="Maghrib"
-              time={formatTime(timings?.Maghrib)}
-              icon="cloudy-night"
-              colors={colors}
-            />
-            <PrayerTimeItem
-              name="Isha"
-              time={formatTime(timings?.Isha)}
-              icon="moon"
-              colors={colors}
-            />
-          </View>
-        )}
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopSection from '../Components/TopSection';
@@ -57,56 +57,126 @@ const Settings = () => {
     };
 
     const renderSection = (title, options, selected, onSelect, sectionKey, isLanguage = false) => (
-        <View className="mb-4">
+        <View className="mb-5">
             <TouchableOpacity 
                 onPress={() => toggleSection(sectionKey)}
-                className="flex-row items-center justify-between p-4 rounded-lg shadow-sm"
-                style={{ backgroundColor: colors.cardBackground }}
+                className="flex-row items-center justify-between p-5 rounded-2xl shadow-sm"
+                style={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(20px)',
+                  borderWidth: 1,
+                  borderColor: 'rgba(255, 255, 255, 0.2)',
+                  shadowColor: colors.accent,
+                  shadowOffset: { width: 0, height: 6 },
+                  shadowOpacity: 0.15,
+                  shadowRadius: 12,
+                  elevation: 8,
+                }}
             >
-                <View className="flex-row items-center">
-                    <Text 
-                        className="text-lg font-semibold"
-                        style={{ color: colors.accent }}
+                {/* Glassmorphic background */}
+                <View 
+                  className="absolute inset-0 rounded-2xl"
+                  style={{
+                    backgroundColor: colors.cardBackground,
+                    opacity: 0.9,
+                  }}
+                />
+                
+                <View className="flex-row items-center relative z-10">
+                    <View 
+                        className="w-12 h-12 rounded-2xl items-center justify-center mr-4"
+                        style={{ 
+                          backgroundColor: `${colors.accent}15`,
+                          borderWidth: 1,
+                          borderColor: `${colors.accent}25`,
+                        }}
                     >
-                        {title}
-                    </Text>
-                    <Text 
-                        className="text-base ml-2"
-                        style={{ color: colors.secondaryText }}
-                    >
-                        ({isLanguage ? getLanguageName(selected) : selected})
-                    </Text>
+                        <Ionicons 
+                            name={sectionKey === 'language' ? 'language' : 'text'} 
+                            size={20} 
+                            color={colors.accent} 
+                        />
+                    </View>
+                    <View>
+                        <Text 
+                            className="text-lg font-semibold"
+                            style={{ 
+                              color: colors.accent,
+                              textShadowColor: colors.primaryText === '#F7FAFC' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+                              textShadowOffset: { width: 0, height: 1 },
+                              textShadowRadius: 2,
+                              fontWeight: '600',
+                            }}
+                        >
+                            {title}
+                        </Text>
+                        <Text 
+                            className="text-sm"
+                            style={{ 
+                                color: colors.secondaryText,
+                                fontWeight: '400',
+                            }}
+                        >
+                            ({isLanguage ? getLanguageName(selected) : selected})
+                        </Text>
+                    </View>
                 </View>
                 <Ionicons 
                     name={expandedSections[sectionKey] ? "chevron-up" : "chevron-down"} 
                     size={24} 
                     color={colors.accent}
+                    style={{ zIndex: 10 }}
                 />
             </TouchableOpacity>
             
             {expandedSections[sectionKey] && (
                 <View 
-                    className="mt-2 rounded-lg shadow-sm overflow-hidden"
-                    style={{ backgroundColor: colors.cardBackground }}
+                    className="mt-3 rounded-2xl shadow-sm overflow-hidden"
+                    style={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      borderWidth: 1,
+                      borderColor: 'rgba(255, 255, 255, 0.1)',
+                    }}
                 >
-                    {options.map((option) => (
+                    {/* Glassmorphic background */}
+                    <View 
+                      className="absolute inset-0 rounded-2xl"
+                      style={{
+                        backgroundColor: colors.cardBackground,
+                        opacity: 0.8,
+                      }}
+                    />
+                    
+                    {options.map((option, index) => (
                         <TouchableOpacity
                             key={isLanguage ? option.code : option}
                             onPress={() => {
                                 onSelect(isLanguage ? option.code : option);
                                 toggleSection(sectionKey);
                             }}
-                            className="flex-row items-center justify-between p-4 border-b"
-                            style={{ borderBottomColor: colors.divider }}
+                            className="flex-row items-center justify-between p-4"
+                            style={{ 
+                              borderBottomColor: colors.divider,
+                              borderBottomWidth: index < options.length - 1 ? 1 : 0,
+                              backgroundColor: selected === (isLanguage ? option.code : option) ? `${colors.accent}10` : 'transparent',
+                            }}
                         >
                             <Text 
-                                className="text-base"
-                                style={{ color: colors.primaryText }}
+                                className="text-base font-medium"
+                                style={{ 
+                                  color: colors.primaryText,
+                                  opacity: selected === (isLanguage ? option.code : option) ? 1 : 0.8,
+                                }}
                             >
                                 {isLanguage ? option.name : option}
                             </Text>
                             {selected === (isLanguage ? option.code : option) && (
-                                <Ionicons name="checkmark-circle" size={24} color={colors.accent} />
+                                <View 
+                                  className="w-6 h-6 rounded-full items-center justify-center"
+                                  style={{ backgroundColor: colors.accent }}
+                                >
+                                  <Ionicons name="checkmark" size={16} color={colors.buttonText} />
+                                </View>
                             )}
                         </TouchableOpacity>
                     ))}
@@ -135,40 +205,74 @@ const Settings = () => {
     const renderDarkModeToggle = () => (
         <View className="mb-6">
             <Text 
-                className="text-lg font-semibold mb-3"
-                style={{ color: colors.accent }}
+                className="text-xl font-semibold mb-4"
+                style={{ 
+                  color: colors.accent,
+                  textShadowColor: colors.primaryText === '#F7FAFC' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 2,
+                  fontWeight: '600',
+                }}
             >
                 Appearance
             </Text>
             <View 
-                className="rounded-2xl p-5 shadow-sm"
+                className="rounded-3xl p-6 shadow-2xl"
                 style={{ 
-                    backgroundColor: colors.cardBackground,
-                    shadowColor: colors.cardShadow,
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 8,
-                    elevation: 4,
-                    borderWidth: 1,
-                    borderColor: colors.divider,
+                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(30px)',
+                    shadowColor: colors.accent,
+                    shadowOffset: { width: 0, height: 12 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 20,
+                    elevation: 15,
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(255, 255, 255, 0.15)',
                 }}
             >
-                <View className="flex-row items-center justify-between">
+                {/* Glassmorphic background */}
+                <View 
+                  className="absolute inset-0 rounded-3xl"
+                  style={{
+                    backgroundColor: colors.cardBackground,
+                    opacity: 0.9,
+                  }}
+                />
+                
+                <View className="flex-row items-center justify-between relative z-10">
                     <View className="flex-row items-center">
                         <View 
-                            className="w-10 h-10 rounded-full items-center justify-center mr-3"
-                            style={{ backgroundColor: settings.darkMode ? colors.buttonPrimary : `${colors.buttonPrimary}20` }}
+                            className="w-14 h-14 rounded-2xl items-center justify-center mr-4"
+                            style={{ 
+                              backgroundColor: settings.darkMode 
+                                ? `${colors.buttonPrimary}20` 
+                                : `${colors.buttonPrimary}15`,
+                              borderWidth: 2,
+                              borderColor: settings.darkMode 
+                                ? `${colors.buttonPrimary}40` 
+                                : `${colors.buttonPrimary}25`,
+                              shadowColor: colors.buttonPrimary,
+                              shadowOffset: { width: 0, height: 4 },
+                              shadowOpacity: 0.15,
+                              shadowRadius: 8,
+                              elevation: 4,
+                            }}
                         >
                             <Ionicons 
                                 name={settings.darkMode ? "moon" : "sunny"} 
-                                size={22} 
-                                color={settings.darkMode ? colors.buttonText : colors.buttonPrimary} 
+                                size={26} 
+                                color={colors.buttonPrimary} 
                             />
                         </View>
                         <View>
                             <Text 
-                                className="text-base font-medium"
-                                style={{ color: colors.primaryText }}
+                                className="text-lg font-bold"
+                                style={{ 
+                                  color: colors.primaryText,
+                                  textShadowColor: 'rgba(0, 0, 0, 0.1)',
+                                  textShadowOffset: { width: 0, height: 1 },
+                                  textShadowRadius: 2,
+                                }}
                             >
                                 Dark Mode
                             </Text>
@@ -183,9 +287,17 @@ const Settings = () => {
                     <Switch
                         value={settings.darkMode}
                         onValueChange={(value) => handleSettingChange('darkMode', value)}
-                        trackColor={{ false: colors.divider, true: `${colors.buttonPrimary}80` }}
+                        trackColor={{ false: colors.divider, true: `${colors.buttonPrimary}60` }}
                         thumbColor={settings.darkMode ? colors.buttonPrimary : colors.buttonText}
                         ios_backgroundColor={colors.divider}
+                        style={{
+                          transform: [{ scaleX: 1.1 }, { scaleY: 1.1 }],
+                          shadowColor: colors.buttonPrimary,
+                          shadowOffset: { width: 0, height: 2 },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 4,
+                          elevation: 3,
+                        }}
                     />
                 </View>
             </View>

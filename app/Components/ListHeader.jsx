@@ -8,39 +8,56 @@ const ListHeader = () => {
 
   return (
     <View 
-      className="px-4 py-3 h-18"
+      className="px-6 py-4 h-20"
       style={{ 
         backgroundColor: colors.cardBackground,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255, 255, 255, 0.1)',
       }}
     >
       <View className="flex-row items-center justify-between">
         <View>
-          <View className="flex-row items-center mb-1">
+          <View className="flex-row items-center mb-2">
             <Text 
-              className="text-lg font-bold mr-2"
+              className="text-xl font-bold mr-3"
               style={{ 
                 color: colors.primaryText,
-                textShadowColor: 'rgba(0, 0, 0, 0.1)',
-                textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 2,
+                textShadowColor: colors.primaryText === '#F7FAFC' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.15)',
+                textShadowOffset: { width: 0, height: 2 },
+                textShadowRadius: 4,
+                letterSpacing: 0.3,
+                fontWeight: '700',
               }}
             >
               All Surahs
             </Text>
             <Ionicons 
               name="book-outline" 
-              size={20} 
+              size={22} 
               color={colors.accent}
             />
           </View>
           <View className="flex-row items-center">
             <View 
-              className="w-6 h-0.5 rounded-full mr-2"
-              style={{ backgroundColor: colors.accent }}
+              className="w-8 h-1 rounded-full mr-3"
+              style={{ 
+                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+                backgroundColor: colors.accent,
+                shadowColor: colors.accent,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 4,
+                elevation: 2,
+              }}
             />
             <Text 
-              className="text-xs"
-              style={{ color: colors.secondaryText }}
+              className="text-xs font-medium"
+              style={{ 
+                color: colors.secondaryText,
+                letterSpacing: 0.3,
+                textTransform: 'uppercase',
+                fontWeight: '500',
+              }}
             >
               114 Surahs in the Holy Quran
             </Text>
@@ -48,15 +65,27 @@ const ListHeader = () => {
         </View>
 
         <View 
-          className="w-10 h-10 rounded-xl items-center justify-center"
+          className="w-12 h-12 rounded-2xl items-center justify-center"
           style={{ 
+            background: 'linear-gradient(135deg, rgba(78, 144, 226, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)',
             backgroundColor: `${colors.buttonPrimary}15`,
+            borderWidth: 1.5,
+            borderColor: `${colors.buttonPrimary}25`,
+            shadowColor: colors.buttonPrimary,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
+            elevation: 4,
           }}
         >
           <Text 
-            className="text-base font-bold"
+            className="text-lg font-bold"
             style={{ 
               color: colors.buttonPrimary,
+              textShadowColor: colors.primaryText === '#F7FAFC' ? 'rgba(0, 0, 0, 0.4)' : `${colors.buttonPrimary}30`,
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 2,
+              fontWeight: '700',
             }}
           >
             ١١٤

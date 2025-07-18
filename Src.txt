@@ -1,4 +1,0 @@
-1.
-a good way to implement the word by word audio and the source is :
-https://www.jsdelivr.com/package/npm/@kmaslesa/holy-quran-word-by-word-min
-

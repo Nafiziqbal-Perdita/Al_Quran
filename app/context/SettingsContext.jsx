@@ -5,45 +5,45 @@ const STORAGE_KEY = '@quran_settings';
 
 const SettingsContext = createContext();
 
-// Color palette
+// Premium color palette aligned with 2025 design trends
 const COLORS = {
   light: {
-    background: '#F8F9FA',
-    primaryText: '#1A1A2E',
-    secondaryText: '#4A5568',
-    accent: '#26A69A',        // Teal accent
-    buttonPrimary: '#1E88E5',  // Blue primary
-    buttonSecondary: '#E0F2F1',
+    background: '#F7F9FC',          // Softer, premium background
+    primaryText: '#1A202C',         // Rich dark text
+    secondaryText: '#4A5568',       // Balanced secondary
+    accent: '#4A90E2',              // Professional blue accent
+    buttonPrimary: '#667EEA',       // Premium gradient start
+    buttonSecondary: '#E6FFFA',     // Subtle secondary
     buttonText: '#FFFFFF',
     cardBackground: '#FFFFFF',
-    cardShadow: 'rgba(0, 0, 0, 0.08)',
-    divider: '#E2E8F0',
-    headerBg: '#F8F9FA',
-    highlightBg: '#E3F2FD',    // Light blue highlight
-    error: '#E53935',
-    success: '#43A047',
-    arabicText: '#16697A',     // Special color for Arabic text
-    verseNumber: '#64B5F6',    // Verse number background
-    prayerTime: '#81C784'      // Prayer time highlight
+    cardShadow: 'rgba(70, 144, 226, 0.1)', // Accent-based shadows
+    divider: 'rgba(255, 255, 255, 0.15)',
+    headerBg: '#F7F9FC',
+    highlightBg: 'rgba(70, 144, 226, 0.1)',
+    error: '#EF4444',              // Modern red
+    success: '#10B981',            // Modern green
+    arabicText: '#4A90E2',         // Accent color for Arabic
+    verseNumber: '#8B5CF6',        // Purple accent
+    prayerTime: '#34D399'          // Success green
   },
   dark: {
-    background: '#121212',
-    primaryText: '#E4E6EB',
-    secondaryText: '#B0B3B8',
-    accent: '#4DB6AC',         // Lighter teal for dark mode
-    buttonPrimary: '#2196F3',  // Brighter blue for dark mode
-    buttonSecondary: '#263238',
+    background: '#0F0F0F',          // Rich dark background
+    primaryText: '#FFFFFF',         // Pure white text for maximum contrast
+    secondaryText: '#B0B0B0',       // Lighter gray for better visibility
+    accent: '#70A5FA',              // Brighter blue for better contrast
+    buttonPrimary: '#8B70FA',       // Brighter purple for visibility
+    buttonSecondary: '#1A1A1A',     // Dark secondary
     buttonText: '#FFFFFF',
-    cardBackground: '#1E1E1E',
-    cardShadow: 'rgba(0, 0, 0, 0.2)',
-    divider: '#2D2D2D',
-    headerBg: '#121212',
-    highlightBg: '#0D47A1',    // Darker blue highlight
-    error: '#EF5350',
-    success: '#66BB6A',
-    arabicText: '#80CBC4',     // Lighter teal for Arabic in dark mode
-    verseNumber: '#1976D2',    // Darker verse number background
-    prayerTime: '#388E3C'      // Darker prayer time highlight
+    cardBackground: '#1E1E1E',      // Slightly lighter card background
+    cardShadow: 'rgba(112, 165, 250, 0.2)', // Brighter accent shadows
+    divider: 'rgba(255, 255, 255, 0.15)',
+    headerBg: '#0F0F0F',
+    highlightBg: 'rgba(112, 165, 250, 0.2)',
+    error: '#FF6B6B',              // Brighter red for visibility
+    success: '#51CF66',            // Brighter green
+    arabicText: '#A78BFA',         // Brighter purple for Arabic
+    verseNumber: '#F472B6',        // Bright pink accent
+    prayerTime: '#51CF66'          // Bright success green
   }
 };
 
